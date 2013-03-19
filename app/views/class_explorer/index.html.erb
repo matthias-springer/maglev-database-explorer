@@ -1,5 +1,27 @@
 <h2>Class <%= @clazz.inspect %></h2>
 
+<form class="form-horizontal well" action="/ClassExplorer">
+  <div class="control-group">
+    <legend>Filter results</legend>
+    <label class="control-label" for="id">Object ID of class</label>
+    <div class="controls">
+      <input type="text" id="id" name="id" value="<%= @clazz.object_id %>">
+    </div>
+    <br/>
+    <label class="control-label" for="maxItems">Limit instances</label>
+    <div class="controls">
+      <input type="text" id="maxItems" name="maxItems" value="<%= @max_items %>">
+    </div>
+    <br/>
+    <label class="control-label" for="showIvs">Show instance variables</label>
+    <div class="controls">
+      <input type="text" id="showIvs" name="showIvs" value="<%= @show_ivs %>">
+      <br/><br/>
+      <button type="submit" class="btn">Filter</button>
+    </div>
+  </div>
+</form>
+
 <p>Output limited to <%= @max_items %> instances.</p>
 
 <table class="table table-striped table-bordered">

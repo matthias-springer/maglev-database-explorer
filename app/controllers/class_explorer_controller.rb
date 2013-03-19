@@ -9,8 +9,9 @@ class ClassExplorerController < ApplicationController
       Maglev.abort_transaction
       @objs = ObjectSpace::SystemRepository.__list_instances([@clazz], @max_items, nil, 2, 95, false)[1][0, @max_items]
       @ivs = Set.new
-      
-      if (params[:ivs] == "all") 
+      @show_ivs = params[:showIvs]
+       
+      if (@show_ivs == "all") 
         for obj in @objs
           obj.instance_variables.each do |iv_name|
             @ivs.add(iv_name)
