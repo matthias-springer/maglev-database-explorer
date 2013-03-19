@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MaglevObjectExplorer</title>
+  <%= javascript_include_tag "application" %>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <!--<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>-->
+
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+  <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/bootswatch/2.3.1/cosmo/bootstrap.min.css" rel="stylesheet">
+  <%= csrf_meta_tags %>
+</head>
+
+<body class="index" style="padding-top: 60px;">
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/">MagLev Database Explorer</a>
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li><%= link_to("Class Explorer", :controller => "ClassExplorer", :action => "index", :id => Class.object_id, :maxItems => 50) %></li>
+            <li></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+  </div>
+
+<div style="width:95%" class="container">
+  <%= yield %>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".tooltip-string").tooltip({animation: true, delay: {show: 500, hide: 100}});
+  });
+</script>
+</body>
+</html>

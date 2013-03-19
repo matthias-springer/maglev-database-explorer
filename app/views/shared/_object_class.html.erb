@@ -1,0 +1,6 @@
+<% begin %>
+  <span onclick="window.location.href='<%= object.object_id %>?maxItems=10';"><b class="icon-list"></b></span>
+  <%= object.to_s %>
+<% rescue %>
+  <span>(error)</span>
+<% end %>

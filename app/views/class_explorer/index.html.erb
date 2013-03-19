@@ -1,0 +1,73 @@
+<h2>Class <%= @clazz.inspect %></h2>
+
+<p>Output limited to <%= @max_items %> instances.</p>
+
+<table class="table table-striped table-bordered">
+  <tr>
+    <th>object_id</th>
+    <th>object</th>
+    <% @ivs.each do |iv_name| %>
+      <th><%= iv_name %></th> 
+    <% end %>
+  </tr>
+
+  <% @objs.each do |obj| %>
+    <tr>
+      <td><%= obj.object_id %></td>
+      <td><%= render(:partial => "shared/object", :locals => {:object => obj}) %></td>
+      <% @ivs.each do |iv_name| %>
+        <td>
+          <% if obj.instance_variable_defined?(iv_name) %>
+            <%= render(:partial => "shared/object", :locals => {:object => obj.instance_variable_get(iv_name)}) %>
+          <% else %>
+            (n/a)
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<script>
+  $(document).ready(function () {
+    
+    $(".form-print-it").each(function(formIndex, form) {
+      $(form).find("input[type=text]").keyup(function (e) {
+        if (e.keyCode == 13) {
+          var data = $(form).serialize();
+          var language = $(form).data("language");
+          var textField = $(form).find("#code");
+          var divContainer = $(form).parent().find(".container-print-it-" + language + "-result");
+
+          textField.prop("disabled", true);
+          divContainer.removeClass("alert-success alert-error alert");
+          divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
+
+          $.post("/PrintIt/" + language, data, function(response) {
+            if (response.status == "ok") {
+              $.post("/ObjectExplorer/table", {"id": response.result}, function(response) {
+                divContainer.html(response);
+                divContainer.addClass("alert-success")
+              });
+            }
+            else if (response.status == "exception") {
+              divContainer.text(response.result);
+              divContainer.addClass("alert-error");
+            }
+          });
+          textField.prop("disabled", false);
+          divContainer.addClass("alert");
+          console.log(data);    
+        }
+      });
+    });
+
+    $(window).keydown(function(event){
+      if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+      }
+    });
+
+  });
+</script>

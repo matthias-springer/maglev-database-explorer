@@ -1,0 +1,5 @@
+<% if object.length > 15 %>
+  <span class="tooltip-string" data-toggle="tooltip" title="<%= object %>"><%= object[0, 15] %>...</span>
+<% else %>
+  <%= object %>
+<% end %>
