@@ -11,10 +11,10 @@
   <fieldset class='textbox' style="padding:10px">
     <input type="hidden" id="id" name="id" value="-1" />
 
-    <form style="margin: 0px" class="form-print-it" data-language="ruby">
-      <span id="code-ruby" class="pull-left code-area"></span>
+    <form style="margin: 0px" class="form-print-it">
+      <span id="code-editor" class="pull-left code-area"></span>
       <div style="clear: both;"></div>
-      <div class="container-print-it-ruby-result" style="margin-bottom: 0px;"></div>
+      <div id="object-code-container-result" style="margin-bottom: 0px;"></div>
       <div style="margin-top: 10px; white-space: nowrap;">
         <button class="btn btn-primary object-code-do-it" type="button">Do it</button>
         <button class="btn btn-primary object-code-print-it" type="button">Print it</button>
@@ -31,7 +31,7 @@
 <script>
   $(document).ready(function() {
     var theme = "ace/theme/clouds";
-    var editor = ace.edit("code-ruby");
+    var editor = ace.edit("code-editor");
     editor.setTheme(theme);
     editor.getSession().setMode("ace/mode/ruby");
     
@@ -40,7 +40,7 @@
       var language = form.find("#object-code-lang-ruby").hasClass("active") ? "ruby" : "smalltalk";
       var id = form.parent().find("#id").val();
       var data = {"id": id, code: editor.getValue()};
-      var divContainer = $(form).parent().find(".container-print-it-" + language + "-result");
+      var divContainer = $(form).parent().find("#object-code-container-result");
 
       divContainer.removeClass("alert-success alert-error alert");
       divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");

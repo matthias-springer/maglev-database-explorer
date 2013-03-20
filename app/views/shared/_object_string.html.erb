@@ -1,5 +1,8 @@
 <% if object.length > 15 %>
-  <span class="tooltip-string" data-toggle="tooltip" title="<%= object %>"><%= object[0, 15] %>...</span>
+  <span class="tooltip-string" data-toggle="tooltip" 
+      title="<%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>">
+    <%= inspection ? "" : "\"" %><%= object[0, 15] %>...<%= inspection ? "" : "\"" %>
+  </span>
 <% else %>
-  <%= object %>
+  <%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>
 <% end %>
