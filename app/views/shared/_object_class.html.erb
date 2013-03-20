@@ -1,6 +1,10 @@
+<a href="<%= object.object_id %>?maxItems=10">
+  <b class="icon-list-alt"></b>
+</a>
 <% begin %>
-  <span onclick="window.location.href='<%= object.object_id %>?maxItems=10';"><b class="icon-list"></b></span>
-  <%= object.to_s %>
+  <%= object_dropdown_begin(:object => object) %>
+    <%= object.to_s %>
+  <%= object_dropdown_end(:object => object) %>
 <% rescue %>
   <span>(error)</span>
 <% end %>

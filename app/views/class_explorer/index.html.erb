@@ -1,5 +1,7 @@
 <h2>Class <%= @clazz.inspect %></h2>
 
+<%= render(:partial => "shared/dropdown_object_menu", :locals => {:id => "object-dropdown-menu"}) %>
+
 <form class="form-horizontal well" action="/ClassExplorer">
   <div class="control-group">
     <legend>Filter results</legend>
@@ -53,42 +55,13 @@
 <script>
   $(document).ready(function () {
     
-    $(".form-print-it").each(function(formIndex, form) {
-      $(form).find("input[type=text]").keyup(function (e) {
-        if (e.keyCode == 13) {
-          var data = $(form).serialize();
-          var language = $(form).data("language");
-          var textField = $(form).find("#code");
-          var divContainer = $(form).parent().find(".container-print-it-" + language + "-result");
+    $(document).on("click", ".object-dropdown-toggle", function(event) {
+      var menu = $("#object-dropdown-menu");
+      var dropdownSpan = $(event.target).closest(".dropdown")
 
-          textField.prop("disabled", true);
-          divContainer.removeClass("alert-success alert-error alert");
-          divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
-
-          $.post("/PrintIt/" + language, data, function(response) {
-            if (response.status == "ok") {
-              $.post("/ObjectExplorer/table", {"id": response.result}, function(response) {
-                divContainer.html(response);
-                divContainer.addClass("alert-success")
-              });
-            }
-            else if (response.status == "exception") {
-              divContainer.text(response.result);
-              divContainer.addClass("alert-error");
-            }
-          });
-          textField.prop("disabled", false);
-          divContainer.addClass("alert");
-          console.log(data);    
-        }
-      });
-    });
-
-    $(window).keydown(function(event){
-      if(event.keyCode == 13) {
-        event.preventDefault();
-        return false;
-      }
+      menu.appendTo(dropdownSpan);
+      menu.find("#id").val(dropdownSpan.data("id"));
+      // menu.find("#code").val("");
     });
 
   });

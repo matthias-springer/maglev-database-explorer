@@ -1,0 +1,64 @@
+<style type="text/css" media="screen">
+    .code-area {
+        position: relative;
+        width: 100%;
+        height:100px;
+        border: 1px solid #DDD;
+    }
+</style>
+
+<div class="dropdown-menu" <%= id ? "id=#{id}" : "" %>>
+  <fieldset class='textbox' style="padding:10px">
+    <input type="hidden" id="id" name="id" value="-1" />
+
+    <form style="margin: 0px" class="form-print-it" data-language="ruby">
+      <span id="code-ruby" class="pull-left code-area"></span>
+      <div style="clear: both;"></div>
+      <div class="container-print-it-ruby-result" style="margin-bottom: 0px;"></div>
+      <div style="margin-top: 10px; white-space: nowrap;">
+        <button class="btn btn-primary object-code-do-it" type="button">Do it</button>
+        <button class="btn btn-primary object-code-print-it" type="button">Print it</button>
+        <button class="btn btn-primary object-code-inspect-it" type="button">Inspect it</button>
+        <div class="btn-group" data-toggle="buttons-radio">
+          <button class="btn active" id="object-code-lang-ruby" data-toggle="buttons-checkbox" type="button">Ruby</button>
+          <button class="btn" id="object-code-lang-smalltalk" data-toggle="buttons-checkbox" type="button">Smalltalk</button>
+        </div>
+      </div>
+    </form>
+  </fieldset>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var theme = "ace/theme/clouds";
+    var editor = ace.edit("code-ruby");
+    editor.setTheme(theme);
+    editor.getSession().setMode("ace/mode/ruby");
+    
+    $(".object-code-print-it").click(function (event) {
+      var form = $(event.target).closest("form");
+      var language = form.find("#object-code-lang-ruby").hasClass("active") ? "ruby" : "smalltalk";
+      var id = form.parent().find("#id").val();
+      var data = {"id": id, code: editor.getValue()};
+      var divContainer = $(form).parent().find(".container-print-it-" + language + "-result");
+
+      divContainer.removeClass("alert-success alert-error alert");
+      divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
+
+      $.post("/PrintIt/" + language, data, function(response) {
+        if (response.status == "ok") {
+          $.post("/ObjectExplorer/table", {"id": response.result}, function(response) {
+            divContainer.html(response);
+            divContainer.addClass("alert-success")
+          }); 
+        }
+        else if (response.status == "exception") {
+          divContainer.text(response.result);
+          divContainer.addClass("alert-error");
+        }
+      });
+
+      divContainer.addClass("alert");
+    });
+  });
+</script>

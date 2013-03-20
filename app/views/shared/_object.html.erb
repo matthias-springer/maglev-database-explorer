@@ -1,29 +1,12 @@
-<span class="dropdown">
-  <a class="dropdown-toggle" data-toggle="dropdown">
-    <% begin %>
-      <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object}) %>
-    <% rescue %>
-      <% begin %>
-        <%= render(:partial => "shared/object_string", :locals => {:object => object.inspect}) %>
-      <% rescue %>
-        <span>(error)</span>
-      <% end %>
-    <% end %>
-    <b class="caret"></b>
-  </a>
-  
-  <div class="dropdown-menu">
-    <fieldset class='textbox' style="padding:10px">
-      <form style="margin: 0px" class="form-print-it" data-language="ruby">
-        <input style="margin-top: 8px" id="code" name="code" type="text" placeholder="Ruby print it" />
-        <input type="hidden" id="id" name="id" value="<%= object.object_id %>" />
-      </form>
-      <div class="container-print-it-ruby-result"></div>
-      <form style="margin: 0px" class="form-print-it" data-language="smalltalk">
-        <input style="margin-top: 8px" id="code" name="code" type="text" placeholder="Smalltalk print it" />
-        <input type="hidden" id="id" name="id" value="<%= object.object_id %>" />
-      </form style="margin: 0px">
-      <div class="container-print-it-smalltalk-result"></div>
-    </fieldset>
-  </div>
-</span>
+<a href="/ObjectExplorer/<%= object.object_id %>"><b class="icon-search"></b></a>
+<% begin %>
+  <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object}) %>
+<% rescue %>
+  <% begin %>
+    <%= object_dropdown_begin(:object => object) %>
+      <%= render(:partial => "shared/object_string", :locals => {:object => object.inspect}) %>
+    <%= object_dropdown_end(:object => object) %>
+  <% rescue Exception => exc %>
+    <span class="tooltip-string" data-toggle="tooltip" title="<%= exc %>">(error)</span>
+  <% end %>
+<% end %>
