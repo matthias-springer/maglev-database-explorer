@@ -1,21 +1,39 @@
 class PrintItController < ApplicationController
+  
+  def smalltalk
+    render :json => evaluate(params[:id], params[:code], :smalltalk)
+  end
+
   def ruby
-    obj = ObjectSpace._id2ref(Integer(params[:id]))
+    render :json => evaluate(params[:id], params[:code], :ruby)   
+  end
+
+  private
+
+  def evaluate(id, code, language)
+    obj = ObjectSpace._id2ref(Integer(id))
 
     if obj == nil
-      render :json => {"status" => "object_not_found"}
+      return {"status" => "object_not_found"}
     else
       begin
-        result = obj.instance_eval(params[:code])
-        
+        result = nil
+
+        if language == :smalltalk
+          result = code.__evaluate_smalltalk_in_instance(obj)
+        elsif language == :ruby
+          result = obj.instance_eval(code)
+        end
+
         # save object
         Maglev::PERSISTENT_ROOT[:debug_storage] ||= {}
         Maglev::PERSISTENT_ROOT[:debug_storage][result.object_id] = result
 
-        render :json => {"status" => "ok", "result" => result.object_id}
+        return {"status" => "ok", "result" => result.object_id}
       rescue Exception => exc
-        render :json => {"status" => "exception", "result" => exc.inspect}
+        return {"status" => "exception", "result" => exc.inspect}
       end
     end
   end
+
 end
