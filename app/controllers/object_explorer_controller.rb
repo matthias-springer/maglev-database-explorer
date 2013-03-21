@@ -6,19 +6,11 @@ class ObjectExplorerController < ApplicationController
 
   def object
     @obj = ObjectSpace._id2ref(Integer(params[:id]))
-    
-    @class_id = @obj.class.object_id
-    @ivs = {}
-    @obj.instance_variables.each do |iv_name|
-      @ivs[iv_name] = @obj.instance_variable_get(iv_name).object_id
-    end
 
     respond_to do |format|
       format.html do
         render(:partial => "object")
       end
-
-      format.json
     end
   end
 

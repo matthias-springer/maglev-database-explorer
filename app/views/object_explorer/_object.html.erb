@@ -1,5 +1,16 @@
 <div style="white-space: nowrap;">
   <%= render(:partial => "shared/object", :locals => {:object => @obj}) %> :
   <%= render(:partial => "shared/object", :locals => {:object => @obj.class}) %>
-  <hr/>
+  <hr style="margin: 10px;"/>
+
+  <table style="margin-bottom: 0px;" class="table table-bordered">
+    <tbody>
+      <% @obj.instance_variables.each do |iv_name| %>
+        <tr>
+          <td><%= iv_name %></td>
+          <td><%= render(:partial => "shared/object", :locals => {:object => @obj.instance_variable_get(iv_name)}) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

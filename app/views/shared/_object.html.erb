@@ -1,4 +1,4 @@
-<a href="/ObjectExplorer/<%= object.object_id %>"><b class="icon-search"></b></a>
+<a href="/ObjectExplorer/graph/<%= object.object_id %>"><b class="icon-search"></b></a>
 <% begin %>
   <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false}) %>
 <% rescue %>
