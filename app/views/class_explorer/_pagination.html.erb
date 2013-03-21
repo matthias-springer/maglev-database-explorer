@@ -1,0 +1,23 @@
+<div style="text-align: center;">
+  <span class="pagination">         
+    <ul>
+      <li class="<%= @page > 1 ? "active" : "disabled" %>">
+        <a href="<%= @page > 1 ? page_url(@page - 1) : "#" %>">«</a>
+      </li>
+
+      <% left = [@page - 9, 1].max %>
+      <% right = [left + 19, @max_pages].min %>
+      <% for page_id in left..right %>
+        <% disabled = page_id == @page %>
+        <li class="<%= disabled ? "disabled" : "active" %>">
+            <a href="<%= disabled ? "#" : page_url(page_id) %>"><%= page_id %></a>
+        </li>
+      <% end %>
+    
+      <li class="<%= @page < @max_pages ? "active" : "disabled" %>">
+        <a href="<%= @page < @max_pages ? page_url(@page + 1) : "#" %>">»</a>
+      </li>
+    </ul>
+  </span>
+</div>
+

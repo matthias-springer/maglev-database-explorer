@@ -1,54 +1,6 @@
 <h2>Class <%= render(:partial => "shared/object", :locals => {:object => @clazz}) %></h2>
 
 <%= render(:partial => "shared/dropdown_object_menu", :locals => {:id => "object-dropdown-menu"}) %>
-
-<form class="form-horizontal well" action="/ClassExplorer">
-  <div class="control-group">
-    <legend>Filter results</legend>
-    <label class="control-label" for="id">Object ID of class</label>
-    <div class="controls">
-      <input type="text" id="id" name="id" value="<%= @clazz.object_id %>">
-    </div>
-    <br/>
-    <label class="control-label" for="maxItems">Limit instances</label>
-    <div class="controls">
-      <input type="text" id="maxItems" name="maxItems" value="<%= @max_items %>">
-    </div>
-    <br/>
-    <label class="control-label" for="showIvs">Show instance variables</label>
-    <div class="controls">
-      <input type="text" id="showIvs" name="showIvs" value="<%= @show_ivs %>">
-      <br/><br/>
-      <button type="submit" class="btn">Filter</button>
-    </div>
-  </div>
-</form>
-
-<p>Output limited to <%= @max_items %> instances.</p>
-
-<table class="table table-striped table-bordered">
-  <tr>
-    <th>object_id</th>
-    <th>object</th>
-    <% @ivs.each do |iv_name| %>
-      <th><%= iv_name %></th> 
-    <% end %>
-  </tr>
-
-  <% @objs.each do |obj| %>
-    <tr>
-      <td><%= obj.object_id %></td>
-      <td><%= render(:partial => "shared/object", :locals => {:object => obj}) %></td>
-      <% @ivs.each do |iv_name| %>
-        <td>
-          <% if obj.instance_variable_defined?(iv_name) %>
-            <%= render(:partial => "shared/object", :locals => {:object => obj.instance_variable_get(iv_name)}) %>
-          <% else %>
-            (n/a)
-          <% end %>
-        </td>
-      <% end %>
-    </tr>
-  <% end %>
-</table>
-
+<%= render(:partial => "filter") %>
+<%= render(:partial => "table") %>
+<%= render(:partial => "pagination") %>
