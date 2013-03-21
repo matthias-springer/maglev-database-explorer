@@ -1,15 +1,24 @@
 .component {
-	opacity: 0.8; 
-	filter: alpha(opacity=80);
 	background-color: white;
 	color: black;
 	padding: 0.5em; 
+}
+
+.object-view-reset {
+  white-space: normal; 
+  opacity: 1.0; 
+  filter: alpha(opacity=100);
 }
 
 .window { 
 	border: 2px solid #346789; 
 	z-index: 20; 
 	position: absolute; 
+}
+
+.window-mouse-out {
+  opacity: 0.8;
+  filter: alpha(opacity=80);
 }
 
 .object-drag-dummy {

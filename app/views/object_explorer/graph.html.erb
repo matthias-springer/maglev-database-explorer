@@ -23,6 +23,15 @@
     $("#workspace").append(objectWindow);
     objectWindow.draggable();
     objectWindow.css({"visibility": "visible"});
+    objectWindow.addClass("window-mouse-out");
+
+    objectWindow.mouseenter(function (event) {
+      $(event.target).closest(".window").removeClass("window-mouse-out");
+    });
+
+    objectWindow.mouseleave(function (event) {
+      $(event.target).closest(".window").addClass("window-mouse-out");
+    });
   }
 
   function loadObject(id) {
@@ -65,6 +74,6 @@
 
   $(document).ready(function() {
     generateObjectWindow(<%= @id %>, 20, 20);
-    loadObject(<%= @id %>);  
+    loadObject(<%= @id %>);
   });
 </script>
