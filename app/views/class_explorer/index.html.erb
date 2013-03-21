@@ -52,17 +52,3 @@
   <% end %>
 </table>
 
-<script>
-  $(document).ready(function () {
-    
-    $(document).on("click", ".object-dropdown-toggle", function(event) {
-      var menu = $("#object-dropdown-menu");
-      var dropdownSpan = $(event.target).closest(".dropdown")
-
-      menu.appendTo(dropdownSpan);
-      menu.find("#id").val(dropdownSpan.data("id"));
-      // menu.find("#code").val("");
-    });
-
-  });
-</script>
