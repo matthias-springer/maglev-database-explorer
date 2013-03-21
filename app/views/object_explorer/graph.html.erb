@@ -3,8 +3,8 @@
 <%= render(:partial => "shared/dropdown_object_menu", :locals => {:id => "object-dropdown-menu"}) %>
 
 <div style="position:absolute">
-  <div id="demo">
-    <div class="component window" id="object-<%= @id %>">
+  <div id="workspace">
+    <div class="component window" id="object-dummy" style="visibility: hidden;">
     <div style="white-space: nowrap;"><b class="icon-refresh"></b>Loading...</div></div>
   </div>
 </div>
@@ -15,14 +15,56 @@
 <script src="/assets/demo-helper-jquery.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+  function generateObjectWindow(id, left, top) {
+    var objectWindow = $("#object-dummy").clone();
+    objectWindow.attr("id", "object-" + id);
+    objectWindow.css({"left": left, "top": top});
+     
+    $("#workspace").append(objectWindow);
+    objectWindow.draggable();
+    objectWindow.css({"visibility": "visible"});
+  }
+
   function loadObject(id) {
     $.post("/ObjectExplorer/object.html", {"id": id}, function(response) {
       $("#object-" + id).html(response);
+
+      $(".draggable-new-object").draggable({
+        create: function(event, ui) {
+        },
+
+        cursorAt: {left: 0, top: 0}, 
+
+        start: function(event, ui) {
+          $(event.target).find(".object-iv-name").hide();
+          $(event.target).find(".object-drag-dummy").show();
+        },
+
+        stop: function(event, ui) {
+          var position = $(event.target).offset();
+          var id = $(event.target).data("id");
+          
+          if ($("#object-" + id).length === 0) {
+            var left = position.left - $(event.target).width() / 2;
+            var top = position.top - $(event.target).height() / 2 - $(".index").outerHeight();
+         
+            generateObjectWindow(id, left, top);
+            loadObject(id);
+          } 
+         
+          $(event.target).css({"top": 0});
+          $(event.target).css({"left": 0});
+
+          $(event.target).find(".object-iv-name").show();
+          $(event.target).find(".object-drag-dummy").hide();
+        }
+      });
+
     });
   }
 
   $(document).ready(function() {
+    generateObjectWindow(<%= @id %>, 20, 20);
     loadObject(<%= @id %>);  
-    console.log("loading finished!");
   });
 </script>

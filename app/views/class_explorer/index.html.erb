@@ -1,4 +1,4 @@
-<h2>Class <%= @clazz.inspect %></h2>
+<h2>Class <%= render(:partial => "shared/object", :locals => {:object => @clazz}) %></h2>
 
 <%= render(:partial => "shared/dropdown_object_menu", :locals => {:id => "object-dropdown-menu"}) %>
 
