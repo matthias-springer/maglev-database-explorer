@@ -10,10 +10,21 @@
   filter: alpha(opacity=100);
 }
 
+.object-ivname-box {
+  border: 1px solid #346789;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
+}
+
 .window { 
 	border: 2px solid #346789; 
 	z-index: 20; 
 	position: absolute; 
+
+  box-shadow: 2px 2px 19px #e0e0e0;
+  -o-box-shadow: 2px 2px 19px #e0e0e0;
+  -webkit-box-shadow: 2px 2px 19px #e0e0e0;
+  -moz-box-shadow: 2px 2px 19px #e0e0e0;
 }
 
 .window-mouse-out {
