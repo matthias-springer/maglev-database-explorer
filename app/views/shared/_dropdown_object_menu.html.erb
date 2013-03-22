@@ -56,26 +56,9 @@
       var form = $(event.target).closest("form");
       var language = form.find("#object-code-lang-ruby").hasClass("active") ? "ruby" : "smalltalk";
       var id = form.parent().find("#id").val();
-      var data = {"id": id, code: editor.getValue()};
       var divContainer = $(form).parent().find("#object-code-container-result");
-
-      divContainer.removeClass("alert-success alert-error alert");
-      divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
-
-      $.post("/PrintIt/" + language, data, function(response) {
-        if (response.status == "ok") {
-          $.post("/ObjectExplorer/table", {"id": response.result}, function(response) {
-            divContainer.html(response);
-            divContainer.addClass("alert-success")
-          }); 
-        }
-        else if (response.status == "exception") {
-          divContainer.text(response.result);
-          divContainer.addClass("alert-error");
-        }
-      });
-
-      divContainer.addClass("alert");
+      
+      instancePrintIt(divContainer, id, editor.getValue(), language, function(r) {});
     });
   });
 </script>

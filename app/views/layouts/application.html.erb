@@ -39,8 +39,73 @@
 </div>
 
 <script>
+  function instancePrintIt(divContainer, id, code, language, callback) {
+    instancePrintItWithData(divContainer, {"id": id, "code": code}, "/PrintIt/" + language, callback);
+  }
+
+  function instancePrintItWithData(divContainer, data, url, callback) {
+    divContainer.removeClass("alert-success alert-error alert");
+    divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
+
+    $.post(url, data, function(response) {
+      if (response.status == "ok") {
+        $.post("/ObjectExplorer/table", {"id": response.result}, function(responseHtml) {
+          divContainer.html(responseHtml);
+          divContainer.addClass("alert-success");
+          callback(response);
+        }); 
+      }
+      else if (response.status == "exception") {
+        divContainer.text(response.result);
+        divContainer.addClass("alert-error");
+        callback(response);
+      }
+    });
+
+    divContainer.addClass("alert"); 
+  }
+
   $(document).ready(function() {
     $(".tooltip-string").tooltip({animation: true, delay: {show: 500, hide: 100}});
+
+    $(document).on("dblclick", ".object-inline-view", function(event) {
+      var view = $(event.target).closest(".object-inline-view");
+      var rubyCode = view.find(".object-inline-view-edit-ruby");
+      var rubyCodeInput = rubyCode.find("input");
+      
+      rubyCodeInput.keyup(function(event) {
+        if (event.keyCode == 13) {
+          rubyCodeInput.prop("disabled", true);
+          var resultContainer = rubyCode.find(".object-inline-view-edit-result"); 
+          var data = {
+            "id": view.data("object-owner"), 
+            "code": rubyCodeInput.val(),
+            "setter": view.data("object-setter-ruby")
+          };
+
+          instancePrintItWithData(resultContainer, data, "/PrintIt/evaluateAndSet", function(response) {
+            rubyCodeInput.hide();
+            resultContainer.show();
+
+            // TODO: refresh value from server
+            setTimeout(function() {
+              rubyCode.hide();
+              view.find(".object-inline-view-view").show();
+              rubyCodeInput.show();
+              resultContainer.hide();
+              rubyCodeInput.prop("disabled", false);
+              resultContainer.removeClass("alert-error alert-success");
+            }, 2500);
+          });
+          
+        }
+      });
+
+      rubyCodeInput.val(view.find(".object-inline-typed-view").data("code-ruby"));
+      view.find(".object-inline-view-view").hide();
+      rubyCode.show();
+    });
+
   });
 </script>
 </body>

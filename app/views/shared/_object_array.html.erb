@@ -1,12 +1,13 @@
-<%= object_dropdown_begin(:object => object) %>
-[
-<%= object_dropdown_end(:object => object) %>
-
-<% object.each do |item| %>
-  <%= render(:partial => "shared/object", :object => item) %>, 
-<% end %>
-
-<%= object_dropdown_begin(:object => object) %>
-]
-<%= object_dropdown_end(:object => object) %>
-
+<span class="object-inline-typed-view" data-code-ruby="">
+  <%= object_dropdown_begin(:object => object) %>
+  
+  <%= object_dropdown_end(:object => object) %>
+  
+  <% object.each do |item| %>
+    <%= render(:partial => "shared/object", :object => item) %>, 
+  <% end %>
+  
+  <%= object_dropdown_begin(:object => object) %>
+  
+  <%= object_dropdown_end(:object => object) %>
+</span>

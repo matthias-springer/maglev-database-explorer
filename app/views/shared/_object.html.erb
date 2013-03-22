@@ -1,12 +1,30 @@
-<a href="/ObjectExplorer/graph/<%= object.object_id %>"><b class="icon-search"></b></a>
-<% begin %>
-  <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false}) %>
-<% rescue %>
-  <% begin %>
-    <%= object_dropdown_begin(:object => object) %>
-      <%= render(:partial => "shared/object_string", :locals => {:object => object.inspect, :inspection => true}) %>
-    <%= object_dropdown_end(:object => object) %>
-  <% rescue Exception => exc %>
-    <span class="tooltip-string" data-toggle="tooltip" title="<%= exc %>">(error)</span>
-  <% end %>
-<% end %>
+<span class="object-inline-view" data-id="<%= object.object_id %>" 
+  data-object-getter-ruby="<%= defined?(object_getter_ruby) ? object_getter_ruby : "" %>" 
+  data-object-setter-ruby="<%= defined?(object_setter_ruby) ? object_setter_ruby : "" %>"
+  data-object-owner="<%= defined?(object_owner) ? object_owner : "" %>">
+
+  <span class="object-inline-view-view">
+    <a href="/ObjectExplorer/graph/<%= object.object_id %>"><b class="icon-search"></b></a>
+    <% begin %>
+      <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false}) %>
+    <% rescue %>
+      <% begin %>
+        <span class="object-inline-typed-view" data-code-ruby="ObjectSpace._id2ref(<%= object.object_id %>)">
+          <%= object_dropdown_begin(:object => object) %>
+            <%= render(:partial => "shared/object_string", :locals => {:object => object.inspect, :inspection => true}) %>
+          <%= object_dropdown_end(:object => object) %>
+        </span>
+      <% rescue Exception => exc %>
+        <span class="tooltip-string" data-toggle="tooltip" title="<%= exc %>">(error)</span>
+      <% end %>
+    <% end %>
+  </span>
+  <span class="object-inline-view-edit-ruby" style="display: none;">
+    <input type="text" class="object-inline-view-edit-code-ruby" style="margin-bottom: 0px;" />
+    <div class="object-inline-view-edit-result" style="display: none; margin-bottom: 0px;"></div>
+  </span>
+  <span class="object-inline-view-edit-smalltalk" style="display: none;">
+    <input type="text" class="object-inline-view-edit-code-smalltalk" style="margin-bottom: 0px;" />
+    <div class="object-inline-view-edit-result" style="display: none; margin-bottom: 0px;"></div>
+  </span>
+</span>

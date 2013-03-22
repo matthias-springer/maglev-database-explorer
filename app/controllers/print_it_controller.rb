@@ -8,6 +8,22 @@ class PrintItController < ApplicationController
     render :json => evaluate(params[:id], params[:code], :ruby)   
   end
 
+  def evaluateAndSet
+    evaluation = evaluate(params[:id], params[:code], :ruby)
+    
+    if evaluation["status"] == "ok"
+      setting = evaluate(params[:id], params[:setter] + "ObjectSpace._id2ref(#{evaluation["result"]})", :ruby)
+
+      if setting["status"] == "ok"
+        render :json => evaluation
+      else
+        render :json => setting
+      end
+    else
+      render :json => evaluation
+    end
+  end
+
   private
 
   def evaluate(id, code, language)

@@ -1,8 +1,10 @@
-<% if object.length > 15 %>
-  <span class="tooltip-string" data-toggle="tooltip" 
-      title="<%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>">
-    <%= inspection ? "" : "\"" %><%= object[0, 15] %>...<%= inspection ? "" : "\"" %>
-  </span>
-<% else %>
-  <%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>
-<% end %>
+<span class="object-inline-typed-view" data-code-ruby="<%= inspection ? "" : h(object.inspect) %>">
+  <% if object.length > 15 %>
+    <span class="tooltip-string" data-toggle="tooltip" 
+        title="<%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>">
+      <%= inspection ? "" : "\"" %><%= object[0, 15] %>...<%= inspection ? "" : "\"" %>
+    </span>
+  <% else %>
+    <%= inspection ? "" : "\"" %><%= object %><%= inspection ? "" : "\"" %>
+  <% end %>
+</span>
