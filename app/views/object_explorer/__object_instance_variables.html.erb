@@ -1,0 +1,21 @@
+<hr style="margin: 10px;"/>
+
+<table style="margin-bottom: 0px;" class="table table-bordered">
+  <tbody>
+    <% @obj.instance_variables.each do |iv_name| %>
+      <tr>
+        <td>
+          <%= render(:partial => "draggable_new_object_begin", :locals => {:id => @obj.instance_variable_get(iv_name).object_id}) %>
+            <div class="object-drag-dummy" style="display: none;">
+              <b class="icon-move"></b><%= iv_name %>
+            </div>
+            <div class="object-iv-name">
+              <%= iv_name %>
+            </div>
+          <%= render(:partial => "draggable_new_object_end", :locals => {:id => @obj.instance_variable_get(iv_name).object_id}) %>
+        </td>
+        <td><%= render(:partial => "shared/object", :locals => {:object => @obj.instance_variable_get(iv_name)}) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
