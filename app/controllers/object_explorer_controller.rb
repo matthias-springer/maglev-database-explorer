@@ -11,6 +11,8 @@ class ObjectExplorerController < ApplicationController
       format.html do
         render(:partial => "object")
       end
+
+      format.json
     end
   end
 

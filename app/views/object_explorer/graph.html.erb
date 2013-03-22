@@ -5,7 +5,8 @@
 <div style="position:absolute">
   <div id="workspace">
     <div class="component window" id="object-dummy" style="visibility: hidden;">
-    <div style="white-space: nowrap;"><b class="icon-refresh"></b>Loading...</div></div>
+      <div style="white-space: nowrap;"><b class="icon-refresh"></b>Loading...</div>
+    </div>
   </div>
 </div>
 
@@ -15,13 +16,58 @@
 <script src="/assets/demo-helper-jquery.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+  graphDb = {
+    references: {},
+    superclasses: {}};
+
+  function graphDbAddReference(iv, obj1, obj2) {
+    if (!graphDb.references[obj1]) {
+      graphDb.references[obj1] = {};
+    }
+
+    graphDb.references[obj1][iv] = obj2;
+  }
+  
+  function drawGraphForObject(id) {
+    console.log("drawGraphForObject(" + id + ")");
+
+    // Draw references
+    for (var obj1 in graphDb.references) {
+      var first = "target";
+      var second = "source";
+
+      if (obj1 == id) {
+        first = "source";
+        second = "target";
+      }
+
+      for (var ivName in graphDb.references[obj1]) {
+        var obj2 = graphDb.references[obj1][ivName];
+        
+        if (obj1 == id || obj2 == id) {
+          var objectsDrawn = $("#object-" + obj1).length == 1 && $("#object-" + obj2).length == 1
+
+          if (objectsDrawn) {
+            var parameters = {
+              overlays: ["Arrow", [ "Label", { label: ivName, location: 0.25, id: "myLabel"} ]
+            ]};
+
+            parameters[first] = "object-" + obj2;
+            parameters[second] = "object-" + obj1;
+            jsPlumb.connect(parameters);
+          }
+        }
+      }
+    }
+  }
+
   function generateObjectWindow(id, left, top) {
     var objectWindow = $("#object-dummy").clone();
     objectWindow.attr("id", "object-" + id);
     objectWindow.css({"left": left, "top": top});
      
     $("#workspace").append(objectWindow);
-    objectWindow.draggable();
+    jsPlumb.draggable(objectWindow);
     objectWindow.css({"visibility": "visible"});
     objectWindow.addClass("window-mouse-out");
 
@@ -37,6 +83,15 @@
   function loadObject(id) {
     $.post("/ObjectExplorer/object.html", {"id": id}, function(response) {
       $("#object-" + id).html(response);
+
+      $.post("/ObjectExplorer/object.json", {"id": id}, function(response) {
+        // Save graph structure in graph_db
+        for (var ivName in response.ivs) {
+          graphDbAddReference(ivName, response.id, response.ivs[ivName]);
+        }
+
+        drawGraphForObject(id);
+      });
 
       $(".draggable-new-object").draggable({
         create: function(event, ui) {
@@ -73,6 +128,7 @@
   }
 
   $(document).ready(function() {
+    $("#object-dummy").removeClass("ui-draggable");
     generateObjectWindow(<%= @id %>, 20, 20);
     loadObject(<%= @id %>);
   });

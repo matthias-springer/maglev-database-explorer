@@ -1,0 +1,10 @@
+{
+  "id": <%= @obj.object_id %>,
+  "class": <%= @obj.class.object_id %>,
+  "ivs":
+  <% ivs = {} %>
+  <% @obj.instance_variables.each do |iv_name| %>
+    <% ivs[iv_name.to_s] = @obj.instance_variable_get(iv_name).object_id %>
+  <% end %>
+  <%= ivs.to_json.html_safe %>
+}
