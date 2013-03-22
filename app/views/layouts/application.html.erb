@@ -45,7 +45,7 @@
 
   function instancePrintItWithData(divContainer, data, url, callback) {
     divContainer.removeClass("alert-success alert-error alert");
-    divContainer.html("<b class=\"icon-refresh\"></b> Waiting...");
+    divContainer.html("<b class=\"icon-refresh icon-spin\"></b> Waiting...");
 
     $.post(url, data, function(response) {
       if (response.status == "ok") {
@@ -63,6 +63,14 @@
     });
 
     divContainer.addClass("alert"); 
+  }
+
+  function reloadObject(id) {
+    $(".object-inline-view[data-id=" + id + "]").html("<b class=\"icon-refresh icon-spin\"></b> Loading...");
+
+    $.post("/ObjectExplorer/table", {"id": id}, function(response) {
+      $(".object-inline-view[data-id=" + id + "]").html($($.parseHTML(response.trim())).html());
+    });
   }
 
   $(document).ready(function() {
@@ -91,6 +99,7 @@
           instancePrintItWithData(resultContainer, data, "/PrintIt/evaluateAndSet", function(response) {
             rubyCodeInput.hide();
             resultContainer.show();
+            reloadObject(view.data("object-owner"));
 
             // TODO: refresh value from server
             setTimeout(function() {
