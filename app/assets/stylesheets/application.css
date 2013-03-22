@@ -11,3 +11,9 @@
  *= require_self
  *= require_tree .
  */
+
+.code-editor-textfield {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+  margin-bottom: 0px;
+}
+

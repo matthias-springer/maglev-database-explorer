@@ -73,6 +73,11 @@
       var rubyCode = view.find(".object-inline-view-edit-ruby");
       var rubyCodeInput = rubyCode.find("input");
       
+      if (view.data("object-setter-ruby") === "") {
+        // Inplace edit not possible here, no setter code given
+        return;
+      }
+
       rubyCodeInput.keyup(function(event) {
         if (event.keyCode == 13) {
           rubyCodeInput.prop("disabled", true);
