@@ -68,7 +68,7 @@
   $(document).ready(function() {
     $(".tooltip-string").tooltip({animation: true, delay: {show: 500, hide: 100}});
 
-    $(document).on("dblclick", ".object-inline-view", function(event) {
+    function editObjectInlineEvent(event) {
       var view = $(event.target).closest(".object-inline-view");
       var rubyCode = view.find(".object-inline-view-edit-ruby");
       var rubyCodeInput = rubyCode.find("input");
@@ -104,7 +104,10 @@
       rubyCodeInput.val(view.find(".object-inline-typed-view").data("code-ruby"));
       view.find(".object-inline-view-view").hide();
       rubyCode.show();
-    });
+    }
+
+    $(document).on("dblclick", ".object-inline-view", editObjectInlineEvent);
+    $(document).on("click", ".object-inline-typed-view-edit-button", editObjectInlineEvent);
 
   });
 </script>

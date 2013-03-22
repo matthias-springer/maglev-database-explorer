@@ -17,7 +17,8 @@
         <td><%= render(:partial => "shared/object", :locals => {
           :object => @obj.instance_variable_get(iv_name), 
           :object_owner => @obj.object_id,
-          :object_setter_ruby => "#{iv_name} = "}) %></td>
+          :object_setter_ruby => "#{iv_name} = ",
+          :hide_explore_object => true}) %></td>
       </tr>
     <% end %>
   </tbody>

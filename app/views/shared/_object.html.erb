@@ -1,10 +1,22 @@
+<% hide_explore_object = false if not defined?(hide_explore_object) %>
+<% object_setter_ruby = "" if not defined?(object_setter_ruby) %>
+<% object_getter_ruby = "" if not defined?(object_getter_ruby) %>
+<% object_owner = "" if not defined?(object_owner) %>
+
 <span class="object-inline-view" data-id="<%= object.object_id %>" 
-  data-object-getter-ruby="<%= defined?(object_getter_ruby) ? object_getter_ruby : "" %>" 
-  data-object-setter-ruby="<%= defined?(object_setter_ruby) ? object_setter_ruby : "" %>"
-  data-object-owner="<%= defined?(object_owner) ? object_owner : "" %>">
+  data-object-getter-ruby="<%= object_getter_ruby %>" 
+  data-object-setter-ruby="<%= object_setter_ruby %>"
+  data-object-owner="<%= object_owner %>">
 
   <span class="object-inline-view-view">
-    <a href="/ObjectExplorer/graph/<%= object.object_id %>"><b class="icon-search"></b></a>
+    <% if not hide_explore_object %>
+      <a href="/ObjectExplorer/graph/<%= object.object_id %>"><b class="icon-search"></b></a>
+    <% end %>
+    
+    <% if object_setter_ruby %>
+      <a href="#" class="object-inline-typed-view-edit-button"><b class="icon-pencil"></b></a>
+    <% end %>
+      
     <% begin %>
       <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false}) %>
     <% rescue %>
