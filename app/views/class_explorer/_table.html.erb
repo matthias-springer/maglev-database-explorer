@@ -5,6 +5,9 @@
     <% @ivs.each do |iv_name| %>
       <th><%= iv_name %></th>
     <% end %>
+    <% @additional_data_names.each do |data_name| %>
+      <th><%= data_name %></th>
+    <% end %>
   </tr>
 
   <% @objs.each do |obj| %>
@@ -15,6 +18,16 @@
         <td>
           <% if obj.instance_variable_defined?(iv_name) %>
             <%= render(:partial => "shared/object", :locals => {:object => obj.instance_variable_get(iv_name)}) %>
+          <% else %>
+            (n/a)
+          <% end %>
+        </td>
+      <% end %>
+
+      <% @additional_data_names.each do |data_name| %>
+        <td>
+          <% if @additional_data[obj].has_key?(data_name) %>
+            <%= render(:partial => "shared/object", :locals => {:object => @additional_data[obj][data_name]}) %>
           <% else %>
             (n/a)
           <% end %>

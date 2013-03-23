@@ -22,9 +22,29 @@ class ClassExplorerController < ApplicationController
         end
       end
     end
+
+    @additional_data_names = Set.new
+    @additional_data = {}
+    @additional_data.compare_by_identity
+    
+    @objs.each do |obj|
+      additional_data_hash = additional_data(obj)
+      additional_data_hash.keys.each do |name|
+        @additional_data_names.add(name)
+      end
+      @additional_data[obj] = additional_data_hash
+    end
   end
 
   private
+
+  def additional_data(object)
+    if object.class == Class or object.class == Module
+      return {"Included Modules" => object.included_modules}
+    else
+      return {}
+    end
+  end
 
   def page_url(page)
     "/ClassExplorer/index/#{@id}?showIvs=#{@show_ivs}&page=#{page}"
