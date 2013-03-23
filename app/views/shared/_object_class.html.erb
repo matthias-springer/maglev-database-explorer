@@ -4,7 +4,7 @@
   </a>
   <% begin %>
     <%= object_dropdown_begin(:object => object) %>
-      <%= object.to_s %>
+      <%= object.inspect %>
     <%= object_dropdown_end(:object => object) %>
   <% rescue %>
     <span>(error)</span>
