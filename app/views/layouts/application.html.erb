@@ -18,7 +18,7 @@
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
-        <a class="brand" href="/">MagLev Database Explorer</a>
+        <a class="brand" href="/" style="padding: 5px 20px 5px;"><img src="http://maglev.github.com/images/maglev-logo.gif" style="height: 40px;">  MagLev Database Explorer</a>
         <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -26,7 +26,8 @@
         </button>
         <div class="nav-collapse collapse">
           <ul class="nav">
-            <li><%= link_to("Class Explorer", :controller => "ClassExplorer", :action => "index", :id => Class.object_id, :maxItems => 50) %></li>
+            <li><a href="/ClassExplorer/index/<%= Class.object_id %>"><b class="icon-list-alt"></b>Class Explorer</a></li>
+            <li><a href="/ObjectExplorer/graph/<%= Maglev::PERSISTENT_ROOT.object_id %>"><b class="icon-search"></b>PERSISTENT_ROOT</a></li>
             <li></li>
           </ul>
         </div><!--/.nav-collapse -->
