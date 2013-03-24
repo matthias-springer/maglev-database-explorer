@@ -2,19 +2,23 @@
   <%= object_dropdown_begin(:object => object) %>
   [  
   <%= object_dropdown_end(:object => object) %>
-  
-  <% (0..[object.length - 1, 2].min).each do |index| %>
-    <%= render(:partial => "shared/object", :object => object[index]) %>
 
-    <% if index < [object.length - 1, 3].min %>
-      ,
+  <% if not short or object.length == 0 %>  
+    <% (0..[object.length - 1, 2].min).each do |index| %>
+      <%= render(:partial => "shared/object", :object => object[index]) %>
+
+      <% if index < [object.length - 1, 3].min %>
+        ,
+      <% end %>
     <% end %>
-  <% end %>
 
-  <% if object.length > 3 %>
+    <% if object.length > 3 %>
+      ...
+    <% end %>
+  <% else %>
     ...
   <% end %>
-  
+
   <%= object_dropdown_begin(:object => object) %>
   ]
   <%= object_dropdown_end(:object => object) %>
