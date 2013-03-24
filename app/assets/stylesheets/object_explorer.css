@@ -19,13 +19,19 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }
 
-.window-title > * > * > * > a {
+.window-title > span > span > span > span .object-inline-view-view > a {
   color: #ffffff;
   text-decoration: none;
   text-shadow: 0 1px 0 #080808;
 }
 
-.window-title > * > * > a {
+.window-title > span > span > span > a {
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #080808;
+}
+
+.window-title > span > span > a {
   color: #ffffff;
   text-decoration: none;
   text-shadow: 0 1px 0 #080808;
