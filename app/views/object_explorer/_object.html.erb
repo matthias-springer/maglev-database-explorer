@@ -1,5 +1,5 @@
 <div style="white-space: nowrap;">
-  <%= render(:partial => "shared/object", :locals => {:object => @obj}) %> :
+  <%= render(:partial => "shared/object", :locals => {:object => @obj, :short => true}) %> :
   <%= render(:partial => "shared/object", :locals => {:object => @obj.class}) %>
     
   <% if @obj.instance_variables.size > 0 %>

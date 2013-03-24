@@ -2,6 +2,7 @@
 <% object_setter_ruby = "" if not defined?(object_setter_ruby) %>
 <% object_getter_ruby = "" if not defined?(object_getter_ruby) %>
 <% object_owner = "" if not defined?(object_owner) %>
+<% short = false if not defined?(short) %>
 
 <span class="object-inline-view" data-id="<%= object.object_id %>" 
   data-object-getter-ruby="<%= object_getter_ruby %>" 
@@ -18,7 +19,7 @@
     <% end %>
       
     <% begin %>
-      <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false}) %>
+      <%= render(:partial => "shared/object_#{object.class}".downcase, :locals => {:object => object, :inspection => false, :short => short}) %>
     <% rescue %>
       <% begin %>
         <span class="object-inline-typed-view" data-code-ruby="ObjectSpace._id2ref(<%= object.object_id %>)">
