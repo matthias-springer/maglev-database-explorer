@@ -1,8 +1,10 @@
 <div style="white-space: nowrap;">
   <%= render(:partial => "shared/object", :locals => {:object => @obj}) %> :
   <%= render(:partial => "shared/object", :locals => {:object => @obj.class}) %>
-  
+    
   <% if @obj.instance_variables.size > 0 %>
     <%= render(:partial => "_object_instance_variables") %>
   <% end %>
+
+  <%= render(:partial => "additional_object", :locals => {:object => @obj}) %>
 </div>
