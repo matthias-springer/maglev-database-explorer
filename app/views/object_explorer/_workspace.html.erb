@@ -22,25 +22,17 @@
   function drawGraphForObject(id) {
     // Draw references
     for (var obj1 in graphDb.references) {
-      var first = "target";
-      var second = "source";
-
-      if (obj1 == id) {
-        first = "source";
-        second = "target";
-      }
-
       for (var refIndex in graphDb.references[obj1]) {
         var ref = graphDb.references[obj1][refIndex];
         var obj2 = ref[2];
-         
+        
         if (obj1 == id || obj2 == id) {
           var objectsDrawn = $("#object-" + obj1).length == 1 && $("#object-" + obj2).length == 1
 
           if (objectsDrawn) {
             parameters = $.extend(true, {}, jspReferenceConnection);
-            parameters[first] = "object-" + obj2;
-            parameters[second] = "object-" + obj1;
+            parameters.target = "object-" + obj2;
+            parameters.source = "object-" + obj1;
             parameters.overlays[1][1].label = generateIvNameBox(ref[1], ref[0]);
             jsPlumb.connect(parameters);
           }
