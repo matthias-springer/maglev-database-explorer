@@ -58,7 +58,10 @@
     else if (type === "hash_value") {
       content = "obj[<span class=\"insert-inline-object-view\" style=\"white-space: nowrap;\" data-id=\"" + data + "\"></span>] = ...";
     }
-    
+    else if (type === "array_element") {
+      content = "obj[" + data + "] = ...";  
+    }
+     
     return "<span class=\"component object-ivname-box\" style=\"white-space: nowrap;\">" + content + "</span>";
   }
 

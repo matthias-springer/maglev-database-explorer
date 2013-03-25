@@ -51,5 +51,15 @@ class ObjectExplorerController < ApplicationController
 
     return refs
   end
+  
+  def references_array(obj)
+    refs = []
+
+    (0..obj.length).each do |index|
+      refs << ["array_element", index, obj[index].object_id]
+    end
+
+    return refs
+  end
 
 end
