@@ -19,10 +19,18 @@
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 }
 
+.object-drag-dummy {
+  color: #000000;
+}
+
 .window-title span .object-inline-view-view > a {
   color: #ffffff;
   text-decoration: none;
   text-shadow: 0 1px 0 #080808;
+}
+
+.window-title span .object-inline-view-view > a:hover {
+  color: #777;
 }
 
 .window-title span .object-inline-typed-view > a {
@@ -31,8 +39,16 @@
   text-shadow: 0 1px 0 #080808;
 }
 
+.window-title span .object-inline-typed-view > a:hover {
+  color: #777;
+}
+
 .window-title > span > a {
   color: #ffffff;
   text-decoration: none;
   text-shadow: 0 1px 0 #080808;
-} 
+}
+ 
+.window-title > span > a:hover {
+  color: #777;
+}
