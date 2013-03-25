@@ -55,7 +55,7 @@ class ObjectExplorerController < ApplicationController
   def references_array(obj)
     refs = []
 
-    (0..obj.length).each do |index|
+     (0..obj.length - 1).each do |index|
       refs << ["array_element", index, obj[index].object_id]
     end
 
