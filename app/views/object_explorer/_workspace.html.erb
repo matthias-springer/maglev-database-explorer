@@ -18,7 +18,7 @@
   var graphConnections = {};
 
   function graphConnectWindows(obj1, obj2, labelObjectId, labelType) {
-    parameters = $.extend(true, {}, jspReferenceConnection);
+    parameters = $.extend(true, {}, jspConnection[labelType]);
     parameters.target = "object-" + obj2;
     parameters.source = "object-" + obj1;
     parameters.overlays[1][1].label = generateIvNameBox(labelObjectId, labelType);
@@ -69,6 +69,9 @@
     }
     else if (type === "array_element") {
       content = "obj[" + data + "] = ...";  
+    }
+    else if (type === "class") {
+      content = "«instance of»"
     }
      
     return "<span class=\"component object-ivname-box\" style=\"white-space: nowrap;\">" + content + "</span>";

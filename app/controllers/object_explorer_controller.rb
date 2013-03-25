@@ -23,7 +23,7 @@ class ObjectExplorerController < ApplicationController
   private
 
   def references(obj)
-    refs = []
+    refs = [["class", "", obj.class.object_id]]
 
     obj.instance_variables.each do |iv_name|
       refs << ["iv", iv_name, obj.instance_variable_get(iv_name).object_id]

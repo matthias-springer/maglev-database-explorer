@@ -21,7 +21,28 @@ var jspReferenceConnection = {
     "Label", 
     {label: "?", location: 0.25, id: "myLabel"} 
   ]]
+}
+
+var jspInstanceOfConnection = {
+  overlays: ["Arrow", [
+    "Label",
+    {label: "?", location: 0.25, id: "myLabel"}
+  ]],
+  paintStyle: {
+    lineWidth: 2,
+    strokeStyle:"#9b59bb",
+    dashstyle:"4 2",
+    joinstyle:"miter"  
+  }
 };
+
+var jspConnection = {
+  "iv": jspReferenceConnection,
+  "hash_key": jspReferenceConnection,
+  "hash_value": jspReferenceConnection,
+  "array_element": jspReferenceConnection,
+  "class": jspInstanceOfConnection
+}
 
 function jsPlumbPrepareWindow(obj) {
   jsPlumb.draggable(obj);
