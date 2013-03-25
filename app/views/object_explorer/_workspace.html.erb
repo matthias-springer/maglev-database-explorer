@@ -11,9 +11,30 @@
 </div>
 
 <script type="text/javascript">
-  graphDb = {
+  var graphDb = {
     references: {},
     superclasses: {}};
+
+  var graphConnections = {};
+
+  function graphConnectWindows(obj1, obj2, labelObjectId, labelType) {
+    parameters = $.extend(true, {}, jspReferenceConnection);
+    parameters.target = "object-" + obj2;
+    parameters.source = "object-" + obj1;
+    parameters.overlays[1][1].label = generateIvNameBox(labelObjectId, labelType);
+    
+    if (graphConnections[obj1] === undefined) {
+      graphConnections[obj1] = []; 
+    }
+
+    if (graphConnections[obj2] === undefined) {
+      graphConnections[obj2] = [];
+    }
+
+    var connection = jsPlumb.connect(parameters);
+    graphConnections[obj1].push(connection);
+    graphConnections[obj2].push(connection);
+  }
 
   function graphDbAddReference(obj, references) {
     graphDb.references[obj] = references;
@@ -30,11 +51,7 @@
           var objectsDrawn = $("#object-" + obj1).length == 1 && $("#object-" + obj2).length == 1
 
           if (objectsDrawn) {
-            parameters = $.extend(true, {}, jspReferenceConnection);
-            parameters.target = "object-" + obj2;
-            parameters.source = "object-" + obj1;
-            parameters.overlays[1][1].label = generateIvNameBox(ref[1], ref[0]);
-            jsPlumb.connect(parameters);
+            graphConnectWindows(obj1, obj2, ref[1], ref[0]);
           }
         }
       }
@@ -60,6 +77,7 @@
   function generateObjectWindow(id, left, top) {
     var objectWindow = $("#object-dummy").clone();
     objectWindow.attr("id", "object-" + id);
+    objectWindow.data("id", id);
     objectWindow.css({"left": left, "top": top});
      
     $("#workspace").append(objectWindow);
@@ -125,5 +143,18 @@
     $("#object-dummy").removeClass("ui-draggable");
     generateObjectWindow(<%= @id %>, 20, 20);
     loadObject(<%= @id %>);
+  });
+
+  $(document).on("click", ".window-close-button", function(event) {
+    var objectWindow = $(event.target).closest(".window");
+    var id = objectWindow.data("id");
+    
+    for (var index in graphConnections[id]) {
+      jsPlumb.deleteEndpoint(graphConnections[id][index].endpoints[0]);
+      jsPlumb.deleteEndpoint(graphConnections[id][index].endpoints[1]);
+    }
+
+    graphConnections[id] = undefined;
+    objectWindow.remove();
   });
 </script>

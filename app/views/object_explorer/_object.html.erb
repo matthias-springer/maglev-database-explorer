@@ -1,11 +1,19 @@
 <div style="white-space: nowrap;">
-  <div class="window-title">
-    <%= render(:partial => "shared/object", :locals => {:object => @obj, :short => true}) %> :
-    <%= render(:partial => "shared/object", :locals => {:object => @obj.class}) %>
+  <div class="window-title" style="cursor:move; position: relative;">
+    <span style="margin-right: 25px;">
+      <%= render(:partial => "shared/object", :locals => {:object => @obj, :short => true}) %> :
+      <%= render(:partial => "shared/object", :locals => {:object => @obj.class}) %>
+    </span>
+
+    <span style="position: absolute; right: 0px; top: 5px;">
+      <a href="#" class="window-close-button">
+        <b class="icon-remove"></b>
+      </a>
+    </span>
   </div>
 
   <% if @obj.instance_variables.size > 0 %>
-    <%= render(:partial => "_object_instance_variables") %>
+    <%= render(:partial => "object_instance_variables") %>
   <% end %>
 
   <%= render(:partial => "additional_object", :locals => {:object => @obj}) %>
