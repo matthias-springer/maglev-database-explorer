@@ -11,16 +11,12 @@
 </div>
 
 <script type="text/javascript">
-  var graphDb = {
+  graphDb = {
     references: {},
     superclasses: {}};
 
-  function graphDbAddReference(iv, obj1, obj2) {
-    if (!graphDb.references[obj1]) {
-      graphDb.references[obj1] = {};
-    }
-
-    graphDb.references[obj1][iv] = obj2;
+  function graphDbAddReference(obj, references) {
+    graphDb.references[obj] = references;
   }
   
   function drawGraphForObject(id) {
@@ -34,9 +30,10 @@
         second = "target";
       }
 
-      for (var ivName in graphDb.references[obj1]) {
-        var obj2 = graphDb.references[obj1][ivName];
-        
+      for (var refIndex in graphDb.references[obj1]) {
+        var ref = graphDb.references[obj1][refIndex];
+        var obj2 = ref[2];
+         
         if (obj1 == id || obj2 == id) {
           var objectsDrawn = $("#object-" + obj1).length == 1 && $("#object-" + obj2).length == 1
 
@@ -44,7 +41,7 @@
             parameters = $.extend(true, {}, jspReferenceConnection);
             parameters[first] = "object-" + obj2;
             parameters[second] = "object-" + obj1;
-            parameters.overlays[1][1].label = generateIvNameBox(ivName);
+            parameters.overlays[1][1].label = generateIvNameBox(ref[1], ref[0]);
             jsPlumb.connect(parameters);
           }
         }
@@ -52,8 +49,17 @@
     }
   }
 
-  function generateIvNameBox(ivName) {
-    return "<span class=\"component object-ivname-box\">" + ivName + "</span>"
+  function generateIvNameBox(data, type) {
+    var content = data;
+
+    if (type === "hash_key") {
+      content = "obj[...] = <span class=\"insert-inline-object-view\" style=\"white-space: nowrap;\" data-id=\"" + data + "\"></span>";
+    }
+    else if (type === "hash_value") {
+      content = "obj[<span class=\"insert-inline-object-view\" style=\"white-space: nowrap;\" data-id=\"" + data + "\"></span>] = ...";
+    }
+    
+    return "<span class=\"component object-ivname-box\" style=\"white-space: nowrap;\">" + content + "</span>";
   }
 
   function generateObjectWindow(id, left, top) {
@@ -82,10 +88,7 @@
 
       $.post("/ObjectExplorer/object.json", {"id": id}, function(response) {
         // Save graph structure in graph_db
-        for (var ivName in response.ivs) {
-          graphDbAddReference(ivName, response.id, response.ivs[ivName]);
-        }
-
+        graphDbAddReference(response.id, response.references);
         drawGraphForObject(id);
       });
 
