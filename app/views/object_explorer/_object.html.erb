@@ -4,14 +4,31 @@
       <%= render(:partial => "shared/object", :locals => {:object => @obj, :short => true}) %> 
       :
       <span style="visibility: hidden"><a class="btn">a</a></span>
-      <%= render(:partial => "object_class", :locals => {:object => @obj}) %>
+        <div style="display:inline-block; float:right;">
+        <%= render(:partial => "draggable_new_object_begin", :locals => {:id => @obj.class.object_id}) %>
+          <div class="object-drag-dummy" style="display: none;">
+            <b class="icon-move"></b>
+            <%= render(:partial => "shared/object_class", :locals => {:object => @obj.class}) %>
+          </div>
+          <div class="object-iv-name">
+            <%= render(:partial => "shared/object_class", :locals => {:object => @obj.class}) %>
+          </div>
+        <%= render(:partial => "draggable_new_object_end", :locals => {:id => @obj.class.object_id}) %>
+        <span style="display:inline-block;">
+           <a href="#" class="window-close-button" style="color: #ffffff; text-decoration: none; text-shadow: 0 1px 0 #080808;">
+             <b class="icon-remove"></b>
+           </a>
+         </span>
+        </div>
     </span>
     
+    <!--
     <span style="position: absolute; right: 0px; top: 5px;">
       <a href="#" class="window-close-button">
         <b class="icon-remove"></b>
       </a>
     </span>
+    -->
   </div>
   
   <% if @obj.instance_variables.size > 0 %>

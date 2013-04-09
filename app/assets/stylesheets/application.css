@@ -29,6 +29,12 @@
   text-shadow: 0 1px 0 #080808;
 }
 
+.window-close-button {
+  color: #ffffff;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #080808;
+}
+
 [class^="icon-"], [class*=" icon-"] {
     background-image: none;
 }
