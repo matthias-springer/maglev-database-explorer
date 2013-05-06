@@ -1,5 +1,30 @@
+<script src="/amber/server/projects/amber/js/amber.js" type="text/javascript"></script>
 <link href="/assets/object_explorer.css" rel="stylesheet" />
 
 <%= render(:partial => "shared/dropdown_object_menu", :locals => {:id => "object-dropdown-menu"}) %>
 <%= render(:partial => "workspace") %>
+
+<script type="text/javascript">
+  loadAmber({
+    packages: ["AmberProject-Core.js"],
+    packageHome: "/amber/server/projects/importer/",
+    ready: function() {
+      $(function() {
+        smalltalk.AmberProjectExporter._registerPackage_type_prefix_(
+          'AmberProject-Core',
+          'js',
+          '/amber/server/projects/importer/'
+        );
+        smalltalk.AmberProjectImporter._importStPackages_prefix_(
+          [
+//            'Canvas',
+            'Maglev-Core',
+            'Maglev-DatabaseExplorer'
+          ],
+          '/amber/');
+        smalltalk.Browser._open();
+      });
+    }
+  }); 
+</script>
 

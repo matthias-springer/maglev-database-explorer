@@ -17,10 +17,26 @@
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
      -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
+  cursor: move; 
+  position: relative;
+}
+
+.window-title-content {
+  margin-right: 5px;
+}
+
+.display-inline-block {
+  display: inline-block;
 }
 
 .object-drag-dummy {
   color: #000000;
+}
+
+.window-close-button {
+  color: #ffffff; 
+  text-decoration: none; 
+  text-shadow: 0 1px 0 #080808;
 }
 
 .window-title span .object-inline-view-view > a {
@@ -52,3 +68,13 @@
 .window-title > span > a:hover {
   color: #777;
 }
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.draggable-new-object-container {
+  cursor: move; 
+  display: inline-block;
+}
+
