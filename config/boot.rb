@@ -4,3 +4,9 @@ require 'rubygems'
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 
 require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
+
+require './lib/views/object'
+require './lib/views/module'
+require './lib/views/class'
+require './lib/views/array'
+require './lib/views/hash'

@@ -5,6 +5,6 @@ class ObjectController < ApplicationController
     range_from = params[:from] ? Integer(params[:from]) : 1
     range_to = params[:to] ? Integer(params[:to]) : 10
 
-    render :json => {:success => true, result => ObjectSpace._id2ref(id).to_database_view(depth, range_from, range_to)}
+    render :json => {:success => true, :result => ObjectSpace._id2ref(id).to_database_view(depth, range_from, range_to)}
   end
 end

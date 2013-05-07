@@ -29,6 +29,11 @@
   display: inline-block;
 }
 
+.right-inline-block {
+  display: inline-block; 
+  float: right;
+}
+
 .object-drag-dummy {
   color: #000000;
 }
@@ -77,4 +82,5 @@
   cursor: move; 
   display: inline-block;
 }
+
 

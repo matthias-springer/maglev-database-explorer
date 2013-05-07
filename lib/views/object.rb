@@ -8,10 +8,10 @@ class Object
       obj[:basetype] = :object
 
       self.instance_variables.each do |iv_name|
-        object[:instVars][iv_name] = self.instance_variable_get(iv_name).to_database_view(depth - 1)
+        obj[:instVars][iv_name] = self.instance_variable_get(iv_name).to_database_view(depth - 1)
       end
 
-      obj[:class] = self.class.to_database_view(depth - 1)
+      obj[:classObject] = self.class.to_database_view(depth - 1)
       obj[:inspect] = self.inspect
     else
       obj[:loaded] = false

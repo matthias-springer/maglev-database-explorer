@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
   loadAmber({
-    packages: ["AmberProject-Core.js"],
+    packages: ["AmberProject-Core.js", "../../../../js/Kernel-Objects.js", "../../../../js/Canvas.js", "../../../../js/Maglev-Core.js", "../../../../js/Maglev-Database-Explorer.js", "../../../../js/Maglev-Vendor.js"],
     packageHome: "/amber/server/projects/importer/",
     ready: function() {
       $(function() {
@@ -15,14 +15,6 @@
           'js',
           '/amber/server/projects/importer/'
         );
-        smalltalk.AmberProjectImporter._importStPackages_prefix_(
-          [
-            'Canvas',
-            'Maglev-Database-Explorer',
-            'Maglev-Core',
-            'Maglev-Vendor'
-          ],
-          '/amber/');
         smalltalk.Browser._open();
       });
     }
