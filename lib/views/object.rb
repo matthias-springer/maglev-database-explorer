@@ -12,10 +12,13 @@ class Object
       end
 
       obj[:classObject] = self.class.to_database_view(depth - 1)
-      obj[:inspect] = self.inspect
     else
       obj[:loaded] = false
     end
+
+    inspection = self.inspect
+    obj[:inspection] = inspection[0, 200]
+    obj[:inspection] += "..." if obj[:inspection].size < inspection.size
 
     return obj
   end

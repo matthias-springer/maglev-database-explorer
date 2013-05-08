@@ -13,9 +13,12 @@ class Hash
           if (index > range_to)
             return obj
           else
-            obj[:elements][k.to_database_view(depth - 1)] = v.to_database_view(depth - 1)
+            obj[:elements][2 * index] = k.to_database_view(depth - 1)
+            obj[:elements][2 * index + 1] = v.to_database_view(depth - 1)
           end
         end
+
+        index = index + 1
       end
     end
 
