@@ -4,7 +4,6 @@ class Module
 
     if (depth > 0)
       obj[:includedModules] = []
-      obj[:basetype] = :module
       obj[:constants] = {}
       obj[:size] = self.constants.size
       
@@ -20,6 +19,8 @@ class Module
         end
       end
     end
+
+    obj[:basetype] = :module
 
     return obj
   end

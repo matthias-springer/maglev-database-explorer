@@ -5,7 +5,6 @@ class Object
     if depth > 0
       obj[:loaded] = true
       obj[:instVars] = {}
-      obj[:basetype] = :object
 
       self.instance_variables.each do |iv_name|
         obj[:instVars][iv_name] = self.instance_variable_get(iv_name).to_database_view(depth - 1)
@@ -19,6 +18,8 @@ class Object
     inspection = self.inspect
     obj[:inspection] = inspection[0, 200]
     obj[:inspection] += "..." if obj[:inspection].size < inspection.size
+    
+    obj[:basetype] = :object
 
     return obj
   end

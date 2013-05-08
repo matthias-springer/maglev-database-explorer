@@ -6,7 +6,6 @@ class Hash
       index = 1
       obj[:elements] = {}
       obj[:size] = self.size
-      obj[:basetype] = :hash
 
       self.each_pair do |k, v|
         if (index >= range_from)
@@ -21,6 +20,8 @@ class Hash
         index = index + 1
       end
     end
+
+    obj[:basetype] = :hash
 
     return obj
   end
