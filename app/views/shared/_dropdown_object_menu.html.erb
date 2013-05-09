@@ -1,34 +1,5 @@
-<style type="text/css" media="screen">
-    .code-area {
-        position: relative;
-        width: 100%;
-        height:100px;
-        border: 1px solid #DDD;
-    }
-</style>
-
-<div class="dropdown-menu object-view-reset" <%= id ? "id=#{id}" : "" %>>
-  <fieldset class='textbox' style="padding:10px">
-    <input type="hidden" id="id" name="id" value="-1" />
-
-    <form style="margin: 0px" class="form-print-it">
-      <span id="code-editor" class="pull-left code-area"></span>
-      <div style="clear: both;"></div>
-      <div id="object-code-container-result" style="margin-bottom: 0px;"></div>
-      <div style="margin-top: 10px; white-space: nowrap;">
-        <button class="btn btn-primary object-code-do-it" type="button">Do it</button>
-        <button class="btn btn-primary object-code-print-it" type="button">Print it</button>
-        <button class="btn btn-primary object-code-inspect-it" type="button">Inspect it</button>
-        <div class="btn-group" data-toggle="buttons-radio">
-          <button class="btn active" id="object-code-lang-ruby" data-toggle="buttons-checkbox" type="button">Ruby</button>
-          <button class="btn" id="object-code-lang-smalltalk" data-toggle="buttons-checkbox" type="button">Smalltalk</button>
-        </div>
-      </div>
-    </form>
-  </fieldset>
-</div>
-
 <script>
+  /*
   $(document).ready(function() {
     var theme = "ace/theme/clouds";
     var editor = ace.edit("code-editor");
@@ -60,5 +31,5 @@
       
       instancePrintIt(divContainer, id, editor.getValue(), language, function(r) {});
     });
-  });
+  });*/
 </script>
