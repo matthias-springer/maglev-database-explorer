@@ -1,27 +1,29 @@
 class Hash
-  def to_database_view(depth, range_from = 1, range_to = 10)
+  def to_database_view(depth, ranges = {})
     obj = super
+
+    obj[:basetype] = :hash
 
     if (depth > 0)
       index = 1
       obj[:elements] = {}
-      obj[:size] = self.size
+      obj[:elementsSize] = self.size
+
+      range_from = ranges[:elements] ? Integer(ranges[:elements][0]) : 1
+      range_to = ranges[:elements] ? Integer(ranges[:elements][1]) : 10
 
       self.each_pair do |k, v|
         if (index >= range_from)
           if (index > range_to)
-            return obj
+            break
           else
-            obj[:elements][2 * index] = k.to_database_view(depth - 1)
-            obj[:elements][2 * index + 1] = v.to_database_view(depth - 1)
+            obj[:elements][index] = [k.to_database_view(depth - 1), v.to_database_view(depth - 1)]
           end
         end
 
         index = index + 1
       end
     end
-
-    obj[:basetype] = :hash
 
     return obj
   end

@@ -1,10 +1,18 @@
 class ObjectController < ApplicationController
   def index
     id = Integer(params[:id])
-    depth = params[:depth] ? Integer(params[:depth]) : 2
-    range_from = params[:from] ? Integer(params[:from]) : 1
-    range_to = params[:to] ? Integer(params[:to]) : 10
+    ranges = {}
 
-    render :json => {:success => true, :result => ObjectSpace._id2ref(id).to_database_view(depth, range_from, range_to)}
+    params.each_pair do |key, value|
+      parts = key.split("_")
+      
+      if parts[0] == "range"
+        range[parts[1].to_sym] = [params["range_#{parts[1]}_from"], params["range_#{parts[1]}_to"]]
+      end
+    end
+
+    depth = params[:depth] ? Integer(params[:depth]) : 2
+
+    render :json => {:success => true, :result => ObjectSpace._id2ref(id).to_database_view(depth, ranges)}
   end
 end
