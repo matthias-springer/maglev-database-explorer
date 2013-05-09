@@ -24,8 +24,8 @@ class Module
      ((range_from - 1)..[range_to - 1, self.constants.size - 1].min).each do |index|
         begin
           obj[:constants][index + 1] = [self.constants[index].to_database_view(depth - 1), self.const_get(self.constants[index]).to_database_view(depth - 1)]
-#        rescue Exception => e
-#          obj[:constants][index + 1] = {:loaded => false, :error => true, :basetype => :object}
+        rescue Exception => e
+          obj[:constants][index + 1] = {:loaded => false, :error => true, :basetype => :string, :inspection => "(error)", :oop => -1}
         end
       end 
     end

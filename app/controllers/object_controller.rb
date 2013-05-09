@@ -7,7 +7,7 @@ class ObjectController < ApplicationController
       parts = key.split("_")
       
       if parts[0] == "range"
-        range[parts[1].to_sym] = [params["range_#{parts[1]}_from"], params["range_#{parts[1]}_to"]]
+        ranges[parts[1].to_sym] = [params["range_#{parts[1]}_from"], params["range_#{parts[1]}_to"]]
       end
     end
 

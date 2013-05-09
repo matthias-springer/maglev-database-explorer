@@ -21,9 +21,13 @@ class Object
     end
 
     inspection = self.inspect
-    obj[:inspection] = inspection[0, 200]
-    obj[:inspection] += "..." if obj[:inspection].size < inspection.size
-    
+    if inspection._isString
+      obj[:inspection] = inspection[0, 200]
+      obj[:inspection] += "..." if obj[:inspection].size < inspection.size
+    else
+      obj[:inspection] = "(error)"
+    end
+
     obj[:basetype] = :object
 
     return obj
