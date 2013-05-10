@@ -13,12 +13,13 @@ class ObjectController < ApplicationController
 
     depth = params[:depth] ? Integer(params[:depth]) : 2
 
-    render :json => {:success => true, :result => ObjectSpace._id2ref(id).to_database_view(depth, ranges)}
+    render :json => {:success => true, :result => ObjectSpace._id2ref(id).to_database_view(depth, ranges, params)}
   end
 
   def evaluate
     obj = ObjectSpace._id2ref(Integer(params[:id]))
     code = params[:code]
+    puts "DEBUG: running code #{code}"
     language = params[:language]
     depth = params[:depth] ? Integer(params[:depth]) : 2
     ranges = {}
@@ -30,7 +31,7 @@ class ObjectController < ApplicationController
         result = nil
 
         if language == "smalltalk"
-          result = code.__evaluate_smalltalk_in_instance(obj)
+          result = obj.__evaluate_smalltalk(code)
         elsif language == "ruby"
           result = obj.instance_eval(code)
         end
@@ -39,9 +40,9 @@ class ObjectController < ApplicationController
         Maglev::PERSISTENT_ROOT[:debug_storage] ||= {}
         Maglev::PERSISTENT_ROOT[:debug_storage][result.object_id] = result
 
-        render :json => {:success => true, :result => result.to_database_view(depth, ranges)}
+        render :json => {:success => true, :result => result.to_database_view(depth, ranges, params)}
       rescue Exception => exc
-        render :json => {:success => true, :result => exc.to_database_view(depth, ranges)}
+        render :json => {:success => true, :result => exc.to_database_view(depth, ranges, params)}
       end
     end
   end

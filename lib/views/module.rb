@@ -1,5 +1,5 @@
 class Module
-  def to_database_view(depth, ranges = {})
+  def to_database_view(depth, ranges = {}, params = {})
     obj = super
     
     obj[:basetype] = :module
@@ -12,7 +12,7 @@ class Module
       range_to = ranges[:includedModules] ? Integer(ranges[:includedModules][1]) : 10
 
       ((range_from - 1)..[range_to - 1, self.included_modules.size - 1].min).each do |index|
-        obj[:includedModules][index + 1] = self.included_modules[index].to_database_view(depth - 1)
+        obj[:includedModules][index + 1] = self.included_modules[index].to_database_view(depth - 1, {}, params)
       end
 
       obj[:constants] = {}
@@ -23,7 +23,7 @@ class Module
 
      ((range_from - 1)..[range_to - 1, self.constants.size - 1].min).each do |index|
         begin
-          obj[:constants][index + 1] = [self.constants[index].to_database_view(depth - 1), self.const_get(self.constants[index]).to_database_view(depth - 1)]
+          obj[:constants][index + 1] = [self.constants[index].to_database_view(depth - 1, {}, params), self.const_get(self.constants[index]).to_database_view(depth - 1, {}, params)]
         rescue Exception => e
           obj[:constants][index + 1] = {:loaded => false, :error => true, :basetype => :string, :inspection => "(error)", :oop => -1}
         end
@@ -32,5 +32,7 @@ class Module
 
     return obj
   end
+
+  primitive '__compile_smalltalk_method', 'compileMethod:category:'
 end
 

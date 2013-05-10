@@ -1,5 +1,5 @@
 class Symbol
-  def to_database_view(depth, ranges = {})
+  def to_database_view(depth, ranges = {}, params = {})
     obj = super
     obj[:basetype] = :symbol
 

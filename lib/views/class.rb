@@ -1,5 +1,5 @@
 class Class
-  def to_database_view(depth, ranges = {})
+  def to_database_view(depth, ranges = {}, params = {})
     # we will eventually reach Object
     obj = super
 
@@ -11,7 +11,7 @@ class Class
       #  obj[:elements].push(instance.to_database_view(depth - 1))
       #end
 
-      obj[:superclassObject] = self.superclass.to_database_view(depth - 1)
+      obj[:superclassObject] = self.superclass.to_database_view(depth - 1, {}, params)
     end
 
     obj[:basetype] = :class
