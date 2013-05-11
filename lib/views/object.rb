@@ -31,11 +31,25 @@ class Object
 
     obj[:basetype] = :object
 
+    obj = handle_locked_classes(obj, depth, ranges, params)
+
     return obj
   end
 
   def __evaluate_smalltalk(code)
     code.__evaluate_smalltalk_in_context(self)
+  end
+
+  private
+
+  def handle_locked_classes(obj, depth, ranges = {}, params = {})
+    # handle classes that may not be modified
+
+    if self.class == GsNMethod
+      return __gsnmethod_to_database_view(obj, depth, ranges, params)
+    end
+
+    return obj
   end
 end
 

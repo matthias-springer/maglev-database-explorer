@@ -15,4 +15,6 @@ require './lib/views/float'
 require './lib/views/string'
 require './lib/views/symbol'
 require './lib/views/nilclass'
+require './lib/views/gsnmethod'
+require './lib/views/smalltalk_classes'
 
