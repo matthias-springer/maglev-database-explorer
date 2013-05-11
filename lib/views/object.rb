@@ -6,7 +6,8 @@ class Object
       obj[:loaded] = true
       obj[:exception] = false
       obj[:classObject] = self.class.to_database_view(depth - 1, {}, params)
-
+      obj[:virtualClassObject] = self.__virtual_class.to_database_view(depth - 1, {}, params)   # singleton class
+      
       index = 1
       obj[:instVars] = {}
       obj[:instVarsSize] = self.instance_variables.size
@@ -39,6 +40,8 @@ class Object
   def __evaluate_smalltalk(code)
     code.__evaluate_smalltalk_in_context(self)
   end
+
+  primitive '__virtual_class', 'virtualClass'
 
   private
 
