@@ -4,7 +4,7 @@ class Object
 
     if depth > 0
       obj[:loaded] = true
-      obj[:exception] = self.is_a?(Exception)
+      obj[:exception] = false
       obj[:classObject] = self.class.to_database_view(depth - 1, {}, params)
 
       index = 1
