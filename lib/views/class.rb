@@ -15,7 +15,7 @@ class Class
     end
 
     obj[:basetype] = :class
-
+    
     return obj
   end
 end

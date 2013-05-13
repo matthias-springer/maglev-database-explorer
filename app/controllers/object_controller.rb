@@ -34,17 +34,27 @@ class ObjectController < ApplicationController
           result = obj.__evaluate_smalltalk(code)
         elsif language == "ruby"
           result = obj.instance_eval(code)
+        elsif language == "rubyClass"
+          result = obj.class_eval(code)
         end
 
-        # save object
-        Maglev::PERSISTENT_ROOT[:debug_storage] ||= {}
-        Maglev::PERSISTENT_ROOT[:debug_storage][result.object_id] = result
+        store_object(result)
 
         render :json => {:success => true, :result => result.to_database_view(depth, ranges, params)}
       rescue Exception => exc
+        store_object(exc)
+
         render :json => {:success => true, :result => exc.to_database_view(depth, ranges, params)}
       end
     end
   end
+
+  private
+  
+  def store_object(obj)
+    Maglev::PERSISTENT_ROOT[:debug_storage] ||= {}
+    Maglev::PERSISTENT_ROOT[:debug_storage][obj.object_id] = obj
+  end
+
 end
 

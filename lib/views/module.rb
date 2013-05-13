@@ -3,6 +3,8 @@ class Module
     obj = super
     
     obj[:basetype] = :module
+    obj[:smalltalkFullName] = __fullName.to_database_view(depth - 1, {}, params)
+    obj[:rubyFullName] = __rubyFullName.to_database_view(depth - 1, {}, params)
 
     if (depth > 0)
       obj[:includedModules] = {}
@@ -34,5 +36,7 @@ class Module
   end
 
   primitive '__compile_smalltalk_method', 'compileMethod:category:'
+  primitive '__fullName', 'fullName'
+  primitive '__rubyFullName', 'rubyFullName'
 end
 
