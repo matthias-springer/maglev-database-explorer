@@ -4,7 +4,7 @@ class Hash
 
     obj[:basetype] = :hash
 
-    if (depth > 0)
+    if depth > 0
       index = 1
       obj[:elements] = {}
       obj[:elementsSize] = self.size

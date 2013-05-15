@@ -3,10 +3,11 @@ class Module
     obj = super
     
     obj[:basetype] = :module
-    obj[:smalltalkFullName] = __fullName.to_database_view(depth - 1, {}, params)
-    obj[:rubyFullName] = __rubyFullName.to_database_view(depth - 1, {}, params)
 
-    if (depth > 0)
+    if depth > 0 and not params[:noBehavior]
+      obj[:smalltalkFullName] = __fullName.to_database_view(depth - 1, {}, params)
+      obj[:rubyFullName] = __rubyFullName.to_database_view(depth - 1, {}, params)
+
       obj[:includedModules] = {}
       obj[:includedModulesSize] = self.included_modules.size
 
@@ -38,5 +39,48 @@ class Module
   primitive '__compile_smalltalk_method', 'compileMethod:category:'
   primitive '__fullName', 'fullName'
   primitive '__rubyFullName', 'rubyFullName'
+
+  primitive '__category_names', 'categoryNames'
+  primitive '__smalltalk_selectors_in', 'selectorsIn:'
+  primitive '__ruby_nonbridge_selectors', 'nonBridgeRubySelectorsInto:hiddenInto:protection:env:'
+  
+  primitive '__lookup_smalltalk_selector', 'lookupSelector:'
+  primitive '__lookup_ruby_selector', 'rubyMethodFor:instanceMethod:'
+  
+  def __ruby_selectors
+    ruby_selectors = IdentitySet.new
+    hidden_set = IdentitySet.new
+
+    __ruby_nonbridge_selectors(ruby_selectors, hidden_set, -1, 1)
+    ruby_selectors.to_a
+  end
+
+  def __source_for_selector(selector, language)
+    method = nil
+
+    if language == :smalltalk
+      method = __lookup_smalltalk_selector(selector)
+    else
+      method = __lookup_ruby_selector(selector, true)
+    end
+    
+    GsNMethodProxy.for(method).__for_database_explorer
+  end
+
+  def __selectors_by_category
+    categories = {}
+    all_smalltalk = []
+
+    __category_names.each do |cat|
+      st_selectors = __smalltalk_selectors_in(cat)
+      categories[cat] = st_selectors
+      all_smalltalk += st_selectors
+    end
+
+    categories["(all Smalltalk)"] = all_smalltalk
+    categories["(all Ruby)"] = __ruby_selectors
+    
+    categories
+  end
 end
 

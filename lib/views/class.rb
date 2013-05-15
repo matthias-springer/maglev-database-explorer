@@ -3,7 +3,7 @@ class Class
     # we will eventually reach Object
     obj = super
 
-    if depth > 0
+    if depth > 0 and not params[:noBehavior]
       #instances = ObjectSpace::SystemRepository.__list_instances([self], 0, nil, 2, 95, true)[1]
       #obj[:size] = instances.size
 

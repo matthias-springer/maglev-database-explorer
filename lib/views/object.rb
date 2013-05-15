@@ -1,6 +1,8 @@
 class Object
-  def to_database_view(depth, ranges = {}, params = {})
+  def to_database_view(orig_depth, ranges = {}, params = {})
     obj = {:oop => self.object_id}
+
+    depth = param_modify_depth(orig_depth, ranges, params)
 
     if depth > 0
       obj[:loaded] = true
@@ -8,15 +10,19 @@ class Object
       obj[:classObject] = self.class.to_database_view(depth - 1, {}, params)
       obj[:virtualClassObject] = self.__virtual_class.to_database_view(depth - 1, {}, params)   # singleton class
       
-      index = 1
       obj[:instVars] = {}
-      obj[:instVarsSize] = self.instance_variables.size
+      obj[:instVarsSize] = 0
 
-      range_from = ranges[:instVars] ? Integer(ranges[:instVars][0]) : 1
-      range_to = ranges[:instVars] ? Integer(ranges[:instVars][1]) : 10
+      if render_inst_vars
+        index = 1
+        range_from = ranges[:instVars] ? Integer(ranges[:instVars][0]) : 1
+        range_to = ranges[:instVars] ? Integer(ranges[:instVars][1]) : 10
 
-      ((range_from - 1)..[range_to - 1, self.instance_variables.size - 1].min).each do |index|
-        obj[:instVars][index + 1] = [self.instance_variables[index].to_database_view(depth - 1, {}, params), self.instance_variable_get(self.instance_variables[index]).to_database_view(depth - 1, {}, params)]
+        obj[:instVarsSize] = self.instance_variables.size
+
+        ((range_from - 1)..[range_to - 1, self.instance_variables.size - 1].min).each do |index|
+          obj[:instVars][index + 1] = [self.instance_variables[index].to_database_view(depth - 1, {}, params), self.instance_variable_get(self.instance_variables[index]).to_database_view(depth - 1, {}, params)]
+        end
       end
     else
       obj[:loaded] = false
@@ -43,16 +49,21 @@ class Object
 
   primitive '__virtual_class', 'virtualClass'
 
+  protected
+
+  def render_inst_vars
+    true
+  end
+
   private
 
   def handle_locked_classes(obj, depth, ranges = {}, params = {})
     # handle classes that may not be modified
-
-    if self.class == GsNMethod
-      return __gsnmethod_to_database_view(obj, depth, ranges, params)
-    end
-
     return obj
+  end
+
+  def param_modify_depth(depth, ranges, params)
+    depth
   end
 end
 

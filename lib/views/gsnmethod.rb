@@ -1,17 +1,37 @@
 # GsNMethod may not be modified
+class GsNMethodProxy
+  def self.for(method)
+    instance = self.new
+    instance.method = method
+    instance
+  end
 
-class Object
-  private
+  def method=(val)
+    @method = val
+  end
 
-  def __gsnmethod_to_database_view(obj, depth, ranges = {}, params = {})
-    obj[:basetype] = :gsnmethod
-    obj[:selectorString] = self.__evaluate_smalltalk("self selector").to_database_view(depth - 1, {}, params)
+  def source_string
+    @method.__evaluate_smalltalk('self sourceString')
+  end
 
-    if depth > 0
-      obj[:argsAndTemps] = self.__evaluate_smalltalk("self argsAndTemps").to_database_view(depth, {}, params)
-    end
+  def env_id
+    @method.__evaluate_smalltalk('self environmentId')
+  end
 
-    return obj
+  def description_for_stack
+    @method.__evaluate_smalltalk('self _descrForStack')
+  end
+
+  def selector
+    @method.__evaluate_smalltalk('self selector')
+  end
+
+  def filename_line
+    @method.__evaluate_smalltalk('self _fileAndLine')
+  end
+
+  def __for_database_explorer
+    @method.__evaluate_smalltalk('{self sourceString. self environmentId. self selector. self _fileAndLine}')
   end
 end
 

@@ -18,5 +18,9 @@ class Symbol
 
     return obj
   end
+
+  def render_inst_vars
+    false
+  end
 end
 

@@ -24,6 +24,8 @@
         );
         smalltalk.Browser._open();
         smalltalk.Maglev._ready();
+        console.log(<%= Maglev::PERSISTENT_ROOT.object_id %>);
+        smalltalk.Maglev._openWindow_(<%= Maglev::PERSISTENT_ROOT.object_id %>);
       });
     }
   }); 

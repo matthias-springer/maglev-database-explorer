@@ -2,7 +2,7 @@ class Array
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
 
-    if (depth > 0)
+    if depth > 0
       obj[:elements] = {}
       obj[:elementsSize] = self.size
 
