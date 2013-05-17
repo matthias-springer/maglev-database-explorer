@@ -7,6 +7,7 @@ require 'bundler/setup' if File.exists?(ENV['BUNDLE_GEMFILE'])
 
 Object::RENDERED_OBJECTS = IdentitySet.new
 
+require './lib/views/globals'
 require './lib/views/object'
 require './lib/views/exception'
 require './lib/views/module'
@@ -22,4 +23,6 @@ require './lib/views/gsnmethod'
 require './lib/views/thread'
 require './lib/views/execblock'
 require './lib/views/smalltalk_classes'
+require './lib/views/proc'
+require './lib/views/abstract_exception'
 

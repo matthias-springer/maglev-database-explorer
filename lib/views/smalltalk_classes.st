@@ -2,9 +2,43 @@
 Use object.rb for classes that may not be changed due to object
 security policy."
 
-|methods|
+|methods clsDbeHalt|
 
 methods := Dictionary new.
+
+clsDbeHalt := AbstractException subclass: 'DBEHalt'
+  instVarNames: #(wrappedException)
+  classVars: #()
+  classInstVars: #()
+  poolDictionaries: #()
+  inDictionary: 'Globals'
+  category: 'User Classes'
+  options: #().
+
+clsDbeHalt compile: 'wrappedException: anException
+  wrappedException := anException.'.
+
+clsDbeHalt compile: 'wrappedException
+  ^ wrappedException'.
+
+clsDbeHalt class compile: 'signalFor: anException
+  ^ self new
+    wrappedException: anException;
+    signal.'.
+
+AbstractException compile: 'signalNotTrappable
+  "Signal trappable exception for database explorer."
+  gsTrappable := false.
+  DBEHalt signalFor: self.'.
+
+RubyProc compile: 'callAndRescue
+  "Evaluate block for database explorer. Catches all kinds
+  of exceptions."
+  ^ [{false. block value}]
+    on: AbstractException
+    do: [:exc | |cc|
+      [:cont | cc := cont] callCC.
+      {true. exc. cc}]'.
 
 "Dictionary (different from RubyHash)"
 "methods at: Dictionary put: 'asDatabaseView: depth ranges: ranges params: params

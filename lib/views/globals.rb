@@ -1,0 +1,2 @@
+RUBY.global 'AbstractException', 'AbstractException'
+

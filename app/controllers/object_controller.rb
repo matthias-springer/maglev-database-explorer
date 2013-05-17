@@ -27,7 +27,7 @@ class ObjectController < ApplicationController
       render :json => {:success => false, :exception => "object not found"}
     else
       eval_thread = Thread.start do
-        begin
+        value_proc = Proc.new do
           if language == "smalltalk"
             obj.__evaluate_smalltalk(code)
           elsif language == "ruby"
@@ -35,26 +35,22 @@ class ObjectController < ApplicationController
           elsif language == "rubyClass"
             obj.class_eval(code)
           end
-        rescue Exception => exc
-          cc = callcc { |cont| cont }
-          cc.instance_variable_set("@exception", exc)
-          cc
-        end
-      end 
+        end 
       
-      # XXX: FIXME: make all this inst-var-setting go away - maybe add temp_set/temp_get to Continuation?
-      # then you can just do result.temp_get("exc")
-      # ...
-      # or rather add stack frame access to continuations and allow us to get temps from frames ...
-      # rubymirrors should already do what you want here
-      if (result = eval_thread.value).is_a? Continuation
-        exc = result.instance_variable_get("@exception")
-        exc.instance_variable_set("@thread", result.instance_variable_get("@_st_process"))        
-        result = exc
+        value_proc.__call_and_rescue
       end
 
+      result = eval_thread.value
       store_object(result)
-      render :json => {:success => true, :result => result.to_database_view(depth, ranges, params)}
+
+      if result[0]
+        # exception was catched
+        result[1].__add_debug_thread(result[2])
+        render :json => {:success => true, :result => [true, result[1].to_database_view(1, ranges, params)]}
+      else
+        # no exception was catched
+        render :json => {:success => true, :result => [false, result[1].to_database_view(depth, ranges, params)]}
+      end
     end
   end
 

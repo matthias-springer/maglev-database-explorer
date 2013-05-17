@@ -47,4 +47,28 @@ class CodeController < ApplicationController
       render :json => {:success => true, :result => obj.__stack_method_names}
     end
   end
+
+  def stepInto
+    id = Integer(params[:id])
+    obj = ObjectSpace._id2ref(id)
+
+    if obj == nil and id != 20
+      render :json => {:success => false, :exception => "object with id #{id} not found"}
+    else
+      render :json => {:success => true, :result => obj.__step_into.to_database_view(1, {}, {})}
+    end
+  end
+
+  def stepOver
+    id = Integer(params[:id])
+    index = Integer(params[:index])
+    obj = ObjectSpace._id2ref(id)
+
+    if obj == nil and id != 20
+      render :json => {:success => false, :exception => "object with id #{id} not found"}
+    else
+      render :json => {:success => true, :result => obj.__step_over_at(index).to_database_view(1, {}, {})}
+    end
+  end
+
 end

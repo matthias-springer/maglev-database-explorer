@@ -47,6 +47,10 @@ class Object
     code.__evaluate_smalltalk_in_context(self)
   end
 
+  def __add_debug_thread(thread)
+    @thread = thread
+  end
+
   primitive '__virtual_class', 'virtualClass'
 
   protected
@@ -59,7 +63,12 @@ class Object
 
   def handle_locked_classes(obj, depth, ranges = {}, params = {})
     # handle classes that may not be modified
-    return obj
+    
+    if self.is_a?(AbstractException) and self.class != Exception
+      AbstractExceptionProxy.for(self).to_database_view(obj, depth, ranges, params)
+    else
+      obj
+    end
   end
 
   def param_modify_depth(depth, ranges, params)

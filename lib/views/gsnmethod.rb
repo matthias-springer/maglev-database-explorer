@@ -33,5 +33,25 @@ class GsNMethodProxy
   def __for_database_explorer
     @method.__evaluate_smalltalk('{self sourceString. self environmentId. self selector. self _fileAndLine}')
   end
+
+  def source_offsets
+    @method.__evaluate_smalltalk('self _sourceOffsets')
+  end
+
+  def source_offsets_at(step_point)
+    @method.__evaluate_smalltalk("self _sourceOffsetsAt: #{step_point}")
+  end
+
+  def previous_step_point_for_ip(ip)
+    @method.__evaluate_smalltalk("self _previousStepPointForIp: #{ip}")
+  end
+
+  def source_at_ip(ip) 
+    @method.__evaluate_smalltalk("self _sourceAtTosIp: #{ip}")
+  end
+
+  def step_point_for_ip(ip, index, is_native_stack)
+    @method.__evaluate_smalltalk("self _stepPointForIp: #{ip} level: #{index} isNative: #{is_native_stack}")
+  end
 end
 
