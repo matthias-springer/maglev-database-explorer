@@ -59,6 +59,34 @@ class CodeController < ApplicationController
     end
   end
 
+  def proceed
+    id = Integer(params[:id])
+    obj = ObjectSpace._id2ref(id)
+
+    if obj == nil and id != 20
+      render :json => {:success => false, :exception => "object with id #{id} not found"}
+    else
+      result = obj.run
+      sleep 0.1 until obj.stop?
+      #obj.join
+      #Thread.pass
+      render :json => {:success => true, :result => result}
+    end
+  end
+
+  def trim
+    id = Integer(params[:id])
+    obj = ObjectSpace._id2ref(id)
+    index = Integer(params[:index])
+
+    if obj == nil and id != 20
+      render :json => {:success => false, :exception => "object with id #{id} not found"}
+    else
+      obj.__trim_stack_to_level(index)
+      render :json => {:success => true, :result => true}
+    end
+  end
+
   def stepOver
     id = Integer(params[:id])
     index = Integer(params[:index])

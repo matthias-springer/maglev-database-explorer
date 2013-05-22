@@ -38,17 +38,11 @@ class Object
 
     obj[:basetype] = :object
 
-    obj = handle_locked_classes(obj, depth, ranges, params)
-
     return obj
   end
 
   def __evaluate_smalltalk(code)
     code.__evaluate_smalltalk_in_context(self)
-  end
-
-  def __add_debug_thread(thread)
-    @thread = thread
   end
 
   primitive '__virtual_class', 'virtualClass'
@@ -60,16 +54,6 @@ class Object
   end
 
   private
-
-  def handle_locked_classes(obj, depth, ranges = {}, params = {})
-    # handle classes that may not be modified
-    
-    if self.is_a?(AbstractException) and self.class != Exception
-      AbstractExceptionProxy.for(self).to_database_view(obj, depth, ranges, params)
-    else
-      obj
-    end
-  end
 
   def param_modify_depth(depth, ranges, params)
     depth

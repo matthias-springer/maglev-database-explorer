@@ -1,8 +1,8 @@
-class Hash
+class Boolean
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
-    
-    obj[:basetype] = :hash
+    obj[:basetype] = :boolean
+    obj[:value] = self
 
     return obj
   end

@@ -21,6 +21,9 @@ clsDbeHalt compile: 'wrappedException: anException
 clsDbeHalt compile: 'wrappedException
   ^ wrappedException'.
 
+clsDbeHalt compile: 'initialize
+  gsResumable := true.'.
+
 clsDbeHalt class compile: 'signalFor: anException
   ^ self new
     wrappedException: anException;
@@ -31,14 +34,13 @@ AbstractException compile: 'signalNotTrappable
   gsTrappable := false.
   DBEHalt signalFor: self.'.
 
-RubyProc compile: 'callAndRescue
+RubyProc compile: 'callAndRescue: rescueBlock
   "Evaluate block for database explorer. Catches all kinds
   of exceptions."
-  ^ [{false. block value}]
+  ^ [rescueBlock value: {false. block value}]
     on: AbstractException
     do: [:exc | |cc|
-      [:cont | cc := cont] callCC.
-      {true. exc. cc}]'.
+      rescueBlock value: {true. exc}].'.
 
 "Dictionary (different from RubyHash)"
 "methods at: Dictionary put: 'asDatabaseView: depth ranges: ranges params: params

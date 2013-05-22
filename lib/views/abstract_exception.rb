@@ -1,21 +1,21 @@
-# AbstractException may not be modified
+AbstractException = __resolve_smalltalk_global(:AbstractException)
 
-class AbstractExceptionProxy
-  def self.for(exception)
-    instance = self.new
-    instance.exception = exception
-    instance
-  end
+class AbstractException
+  primitive '__resume', 'resume'
 
-  def exception=(val)
-    @exception = val
-  end
+  def to_database_view(depth, ranges = {}, params = {})
+    obj = super
 
-  def to_database_view(obj, depth, ranges = {}, params = {})
     obj[:exception] = true
-    obj[:inspection] = @exception.inspect
+    obj[:inspection] = self.inspect
     obj[:basetype] = :exception
-  
+    
+    # need to fetch these ivs explicitly since they're hidden by rubyPrivateSize
+    obj[:gsResumable] = self.instance_variable_get("@_st_gsResumable") != false
+    obj[:gsTrappable] = self.instance_variable_get("@_st_gsTrappable") != false
+    obj[:gsNumber] = self.instance_variable_get("@_st_gsNumber")
+    obj[:isDBEHalt] = self.class == DBEHalt
+
     return obj
   end
 end

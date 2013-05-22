@@ -26,6 +26,8 @@ class ObjectController < ApplicationController
     if obj == nil
       render :json => {:success => false, :exception => "object not found"}
     else
+      result = nil
+
       eval_thread = Thread.start do
         value_proc = Proc.new do
           if language == "smalltalk"
@@ -33,19 +35,34 @@ class ObjectController < ApplicationController
           elsif language == "ruby"
             obj.instance_eval(code)
           elsif language == "rubyClass"
-            obj.class_eval(code)
+            obj.module_eval(code)
           end
-        end 
-      
-        value_proc.__call_and_rescue
+        end
+
+        value_proc.__call_and_rescue do |eval_result|
+          is_exception = eval_result[0]
+          
+          if is_exception
+            Thread.current.__set_exception(eval_result[1])
+            eval_result[1] = Thread.current
+          else
+            Thread.current.__set_exception(nil)
+          end
+
+          result = eval_result
+
+          if is_exception
+            Thread.stop
+            eval_result[1].__exception.__resume
+          end
+        end
       end
 
-      result = eval_thread.value
+      sleep 0.1 until eval_thread.stop?
       store_object(result)
 
       if result[0]
         # exception was catched
-        result[1].__add_debug_thread(result[2])
         render :json => {:success => true, :result => [true, result[1].to_database_view(1, ranges, params)]}
       else
         # no exception was catched
