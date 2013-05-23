@@ -2,7 +2,29 @@ class Maglev::System
   class_primitive '__stone_version_report', 'stoneVersionReport'
   class_primitive '__gem_version_report', 'gemVersionReport'
 
+  class_primitive '__commit_transaction', 'commitTransaction'
+  class_primitive '__abort_transaction', 'abortTransaction'
+  class_primitive '__continue_transaction', 'continueTransaction'
+
   class << self
+    def __DBECommitTransaction
+      DBEBootstrapChanges.undo_all_changes
+      __commit_transaction
+      DBEBootstrapChanges.redo_all_changes
+      true
+    end
+
+    def __DBEAbortTransaction
+      DBEBootstrapChanges.undo_all_changes
+      __abort_transaction
+      DBEBootstrapChanges.redo_all_changes
+      true
+    end
+
+    def __DBEContinueTransaction
+      __continue_transaction
+    end
+
     def to_database_view(depth, ranges = {}, params = {})
       obj = super
       obj[:basetype] = :systemClass

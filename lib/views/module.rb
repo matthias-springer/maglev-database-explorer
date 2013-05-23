@@ -46,7 +46,9 @@ class Module
   
   primitive '__lookup_smalltalk_selector', 'lookupSelector:'
   primitive '__lookup_ruby_selector', 'rubyMethodFor:instanceMethod:'
-  
+ 
+  primitive '__compile', 'compile:'
+   
   def __ruby_selectors
     ruby_selectors = IdentitySet.new
     hidden_set = IdentitySet.new
