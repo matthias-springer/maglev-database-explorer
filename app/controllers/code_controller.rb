@@ -67,9 +67,7 @@ class CodeController < ApplicationController
       render :json => {:success => false, :exception => "object with id #{id} not found"}
     else
       result = obj.run
-      sleep 0.1 until obj.stop?
-      #obj.join
-      #Thread.pass
+      sleep 0.1 until obj.stop? and obj[:manual_stop]
       render :json => {:success => true, :result => result}
     end
   end

@@ -26,39 +26,16 @@ class ObjectController < ApplicationController
     if obj == nil
       render :json => {:success => false, :exception => "object not found"}
     else
-      result = nil
-
-      eval_thread = Thread.start do
-        value_proc = Proc.new do
-          if language == "smalltalk"
-            obj.__evaluate_smalltalk(code)
-          elsif language == "ruby"
-            obj.instance_eval(code)
-          elsif language == "rubyClass"
-            obj.module_eval(code)
-          end
-        end
-
-        value_proc.__call_and_rescue do |eval_result|
-          is_exception = eval_result[0]
-          
-          if is_exception
-            Thread.current.__set_exception(eval_result[1])
-            eval_result[1] = Thread.current
-          else
-            Thread.current.__set_exception(nil)
-          end
-
-          result = eval_result
-
-          if is_exception
-            Thread.stop
-            eval_result[1].__exception.__resume
-          end
+      result = CodeEvaluation.wait_for_eval_thread do
+        if language == "smalltalk"
+          obj.__evaluate_smalltalk(code)
+        elsif language == "ruby"
+          obj.instance_eval(code)
+        elsif language == "rubyClass"
+          obj.module_eval(code)
         end
       end
 
-      sleep 0.1 until eval_thread.stop?
       store_object(result)
 
       if result[0]
