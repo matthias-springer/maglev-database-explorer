@@ -27,4 +27,5 @@ require './lib/views/abstract_exception'
 require './lib/views/boolean'
 require './lib/views/abstract_dictionary'
 require './lib/views/hash'
+require './lib/views/system'
 

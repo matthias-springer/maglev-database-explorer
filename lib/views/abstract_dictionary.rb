@@ -58,3 +58,10 @@ class Hash
   primitive 'size', 'size'
   primitive '__each_key_and_value&', 'keysAndValuesDo:'
 end
+
+StringKeyValueDictionary = __resolve_smalltalk_global(:StringKeyValueDictionary)
+class StringKeyValueDictionary
+  primitive 'size', 'size'
+  primitive '__each_key_and_value&', 'keysAndValuesDo:'
+end
+

@@ -6,6 +6,8 @@ class Thread
     if depth > 0
       obj[:exception] = __exception.to_database_view(depth - 1, {}, {}) 
       obj[:threadLocalStorage] = __environment.to_database_view(1, {}, {})
+      obj[:threadLocalStorageSize] = __environment.size
+      obj[:status] = self.status.to_s
     end
 
     return obj
