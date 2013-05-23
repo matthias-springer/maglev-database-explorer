@@ -99,3 +99,13 @@
   margin-right: 5px;
 }
 
+.ui-selected {
+  background: #025076;
+  color: #ffffff;
+}
+
+ol.ui-selectable {
+  border: 1px solid #aaaaaa;
+  margin-left: 0px;
+}
+

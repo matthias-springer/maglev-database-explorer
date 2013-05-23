@@ -23,9 +23,12 @@
           '/amber/server/projects/importer/'
         );
         smalltalk.Browser._open();
+      
+        smalltalk.Maglev._persistentRootId_(<%= Maglev::PERSISTENT_ROOT.object_id %>);
+        smalltalk.Maglev._maglevSystemId_(<%= Maglev::System.object_id %>);
+        smalltalk.Maglev._defaultWorkspaceId_(<%= RubyWorkspace.default_instance.object_id %>);
+
         smalltalk.Maglev._ready();
-        console.log(<%= Maglev::PERSISTENT_ROOT.object_id %>);
-        smalltalk.Maglev._openWindow_(<%= Maglev::PERSISTENT_ROOT.object_id %>);
       });
     }
   }); 

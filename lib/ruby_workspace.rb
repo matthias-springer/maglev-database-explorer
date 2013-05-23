@@ -21,4 +21,10 @@ class RubyWorkspace
   def initialize
     store_object(self)
   end
+
+  class << self
+    def default_instance
+      @default_instance ||= self.new
+    end
+  end
 end
