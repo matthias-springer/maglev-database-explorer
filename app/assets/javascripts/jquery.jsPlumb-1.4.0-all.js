@@ -674,7 +674,13 @@
             var o = jsPlumb.CurrentLibrary.getOffset(_gel(el));
 			if (_instance != null) {
                 var z = _instance.getZoom();
-                return {left:o.left / z, top:o.top / z };    
+                if (typeof o === 'undefined') {
+                  console.log("DEBUG ME!!");
+                  // TODO: how can this happen??
+                  return {left:0, top:0};
+                } else {
+                  return {left:o.left / z, top:o.top / z };
+                }
             }
             else
                 return o;

@@ -30,7 +30,11 @@ class Module
         rescue Exception => e
           obj[:constants][index + 1] = {:loaded => false, :error => true, :basetype => :string, :inspection => "(error)", :oop => -1}
         end
-      end 
+      end
+
+      if params[:superList]
+        obj[:superList] = __all_super_list(false, 1).to_database_view(2, {}, {:allElements => true, :noBehavior => true})
+      end
     end
 
     return obj
@@ -48,6 +52,8 @@ class Module
   primitive '__lookup_ruby_selector', 'rubyMethodFor:instanceMethod:'
  
   primitive '__compile', 'compile:'
+  
+  primitive '__all_super_list', '_allSuperList:env:'
    
   def __ruby_selectors
     ruby_selectors = IdentitySet.new
@@ -74,13 +80,13 @@ class Module
     all_smalltalk = []
 
     __category_names.each do |cat|
-      st_selectors = __smalltalk_selectors_in(cat)
+      st_selectors = __smalltalk_selectors_in(cat).sort
       categories[cat] = st_selectors
       all_smalltalk += st_selectors
     end
 
-    categories["(all Smalltalk)"] = all_smalltalk
-    categories["(all Ruby)"] = __ruby_selectors
+    categories["(all Smalltalk)"] = all_smalltalk.sort
+    categories["(all Ruby)"] = __ruby_selectors.sort
     
     categories
   end

@@ -42,6 +42,11 @@ RubyProc compile: 'callAndRescue: rescueBlock
     do: [:exc | |cc|
       rescueBlock value: {true. exc}].'.
 
+"This won't work for meta classes but it allows us to define
+the primitive on Class (Ruby)."
+Metaclass3 compile: 'subclasses
+  ^ ClassOrganizer cachedOrganizer subclassesOf: self'.
+
 "Dictionary (different from RubyHash)"
 "methods at: Dictionary put: 'asDatabaseView: depth ranges: ranges params: params
   |view|

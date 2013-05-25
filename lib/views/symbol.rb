@@ -19,6 +19,10 @@ class Symbol
     return obj
   end
 
+  def <=>(obj)
+    self.to_s <=> obj.to_s
+  end
+
   def render_inst_vars
     false
   end

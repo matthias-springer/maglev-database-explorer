@@ -14,8 +14,14 @@ class Class
       obj[:superclassObject] = self.superclass.to_database_view(depth - 1, {}, params)
     end
 
+    if params[:subclasses]
+      obj[:subclasses] = __subclasses.to_a.to_database_view(2, {}, {:allElements => true, :noBehavior => true})
+    end
+
     obj[:basetype] = :class
     
     return obj
   end
+
+  primitive '__subclasses', 'subclasses'
 end
