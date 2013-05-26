@@ -33,7 +33,7 @@ class Module
       end
 
       if params[:superList]
-        obj[:superList] = __all_super_list(false, 1).to_database_view(2, {}, {:allElements => true, :noBehavior => true})
+        obj[:superList] = __super_list.to_database_view(2, {}, {:allElements => true, :noBehavior => true})
       end
     end
 
@@ -89,6 +89,14 @@ class Module
     categories["(all Ruby)"] = __ruby_selectors.sort
     
     categories
+  end
+
+  private
+
+  def __super_list
+    arr = __all_super_list(false, 1)
+    arr.push(self)
+    arr
   end
 end
 

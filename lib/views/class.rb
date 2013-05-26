@@ -15,7 +15,7 @@ class Class
     end
 
     if params[:subclasses] && depth > 1 # requests usually start at a depth of 2
-      obj[:subclasses] = __subclasses.to_a.to_database_view(2, {}, {:allElements => true, :noBehavior => true})
+      obj[:subclasses] = __subclasses.to_a.sort_by {|c| c.to_s}.reverse.to_database_view(2, {}, {:allElements => true, :noBehavior => true})
     end
 
     obj[:basetype] = :class
