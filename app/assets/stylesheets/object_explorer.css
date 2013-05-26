@@ -138,3 +138,9 @@ ol.ui-selectable {
   background: #025076;
 }
 
+.window-navigation-item {
+  padding: 4px 2px 2px 4px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
