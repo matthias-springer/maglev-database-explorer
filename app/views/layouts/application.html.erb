@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MaglevObjectExplorer</title>
+  <title>MagLev Database Explorer</title>
   <%= javascript_include_tag "application" %>
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>
 
@@ -49,110 +49,14 @@
               </ul>
             </li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </div>
   </div>
 
-<div style="width:95%" class="container">
-  <%= yield %>
-</div>
+  <div style="width:95%" class="container">
+    <%= yield %>
+  </div>
 
-<script>
-  function instancePrintIt(divContainer, id, code, language, callback) {
-    instancePrintItWithData(divContainer, {"id": id, "code": code}, "/PrintIt/" + language, callback);
-  }
-
-  function instancePrintItWithData(divContainer, data, url, callback) {
-    divContainer.removeClass("alert-success alert-error alert");
-    divContainer.html("<b class=\"icon-refresh icon-spin\"></b> Waiting...");
-
-    $.post(url, data, function(response) {
-      if (response.status == "ok") {
-        $.post("/ObjectExplorer/objectInline", {"id": response.result}, function(responseHtml) {
-          divContainer.html(responseHtml);
-          divContainer.addClass("alert-success");
-          callback(response);
-        }); 
-      }
-      else if (response.status == "exception") {
-        divContainer.text(response.result);
-        divContainer.addClass("alert-error");
-        callback(response);
-      }
-    });
-
-    divContainer.addClass("alert"); 
-  }
-
-  function reloadObject(id) {
-    $(".object-inline-view[data-id=" + id + "]").html("<b class=\"icon-refresh icon-spin\"></b> Loading...");
-
-    $.post("/ObjectExplorer/objectInline", {"id": id}, function(response) {
-      $(".object-inline-view[data-id=" + id + "]").html($($.parseHTML(response.trim())).html());
-    });
-  }
-
-  $(document).ready(function() {
-    $(".tooltip-string").tooltip({animation: true, delay: {show: 500, hide: 100}});
-
-    function editObjectInlineEvent(event) {
-      var view = $(event.target).closest(".object-inline-view");
-      var rubyCode = view.find(".object-inline-view-edit-ruby");
-      var rubyCodeInput = rubyCode.find("input");
-      
-      if (view.data("object-setter-ruby") === "") {
-        // Inplace edit not possible here, no setter code given
-        return;
-      }
-
-      rubyCodeInput.keyup(function(event) {
-        if (event.keyCode == 13) {
-          rubyCodeInput.prop("disabled", true);
-          var resultContainer = rubyCode.find(".object-inline-view-edit-result"); 
-          var data = {
-            "id": view.data("object-owner"), 
-            "code": rubyCodeInput.val(),
-            "setter": view.data("object-setter-ruby")
-          };
-
-          instancePrintItWithData(resultContainer, data, "/PrintIt/evaluateAndSet", function(response) {
-            rubyCodeInput.hide();
-            resultContainer.show();
-            reloadObject(view.data("object-owner"));
-
-            // TODO: refresh value from server
-            setTimeout(function() {
-              rubyCode.hide();
-              view.find(".object-inline-view-view").show();
-              rubyCodeInput.show();
-              resultContainer.hide();
-              rubyCodeInput.prop("disabled", false);
-              resultContainer.removeClass("alert-error alert-success");
-            }, 2500);
-          });
-          
-        }
-      });
-
-      rubyCodeInput.val(view.find(".object-inline-typed-view").data("code-ruby"));
-      view.find(".object-inline-view-view").hide();
-      rubyCode.show();
-    }
-
-    $(document).on("dblclick", ".object-inline-view", editObjectInlineEvent);
-    $(document).on("click", ".object-inline-typed-view-edit-button", editObjectInlineEvent);
-
-    $(".insert-inline-object-view").livequery(function(event) {
-      var id = $(this).data("id");
-      var that = $(this);
-
-      $.post("/ObjectExplorer/objectInline", {"id": id, "short": "1"}, function(response) {
-        that.html(response);
-      }); 
-    });
-
-  });
-</script>
 </body>
 </html>
