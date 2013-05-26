@@ -130,4 +130,11 @@ ol.ui-selectable {
   margin-top: 2px;
 }
 
+.list-darker {
+  background: #ccc;
+}
+
+.list-darker.ui-selected {
+  background: #025076;
+}
 
