@@ -14,7 +14,7 @@ class Class
       obj[:superclassObject] = self.superclass.to_database_view(depth - 1, {}, params)
     end
 
-    if params[:subclasses]
+    if params[:subclasses] && depth > 1 # requests usually start at a depth of 2
       obj[:subclasses] = __subclasses.to_a.to_database_view(2, {}, {:allElements => true, :noBehavior => true})
     end
 

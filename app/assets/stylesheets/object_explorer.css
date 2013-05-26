@@ -126,3 +126,8 @@ ol.ui-selectable {
   transform: rotate(180deg);
 }
 
+.jstree-default li {
+  margin-top: 2px;
+}
+
+
