@@ -17,13 +17,14 @@ class ObjectController < ApplicationController
   end
 
   def evaluate
-    obj = ObjectSpace._id2ref(Integer(params[:id]))
+    obj_id = Integer(params[:id])
+    obj = ObjectSpace._id2ref(obj_id)
     code = params[:code]
     language = params[:language]
     depth = params[:depth] ? Integer(params[:depth]) : 2
     ranges = {}
 
-    if obj == nil
+    if obj == nil and obj_id != 20
       render :json => {:success => false, :exception => "object not found"}
     else
       result = CodeEvaluation.wait_for_eval_thread do
