@@ -28,8 +28,8 @@
 }
 
 .window-mouse-out {
-  opacity: 0.8;
-  filter: alpha(opacity=80);
+  opacity: 0.92;
+  filter: alpha(opacity=92);
 }
 
 .object-drag-dummy {

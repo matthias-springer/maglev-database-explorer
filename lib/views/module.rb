@@ -1,9 +1,11 @@
 class Module
+  def __basetype
+    :module
+  end
+
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
     
-    obj[:basetype] = :module
-
     if depth > 0 and not params[:noBehavior]
       obj[:smalltalkFullName] = __fullName.to_database_view(depth - 1, {}, params)
       obj[:rubyFullName] = __rubyFullName.to_database_view(depth - 1, {}, params)

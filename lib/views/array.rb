@@ -1,4 +1,8 @@
 class Array
+  def __basetype
+    :array
+  end
+
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
 
@@ -18,8 +22,6 @@ class Array
         obj[:elements][index + 1] = self[index].to_database_view(depth - 1, {}, params)
       end
     end
-
-    obj[:basetype] = :array
 
     return obj
   end

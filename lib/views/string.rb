@@ -1,7 +1,10 @@
 class String
+  def __basetype
+    :string
+  end
+
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
-    obj[:basetype] = :string
 
     obj[:string] = self[0, 200]
     if (obj[:string].size < self.size)

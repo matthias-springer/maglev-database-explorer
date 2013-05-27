@@ -1,4 +1,8 @@
 class Object
+  def __basetype
+    :object
+  end
+
   def to_database_view(orig_depth, ranges = {}, params = {})
     obj = {:oop => self.object_id}
 
@@ -36,7 +40,7 @@ class Object
       obj[:inspection] = "(error)"
     end
 
-    obj[:basetype] = :object
+    obj[:basetype] = __basetype
 
     return obj
   end

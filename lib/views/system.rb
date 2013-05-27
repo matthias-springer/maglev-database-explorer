@@ -25,9 +25,12 @@ class Maglev::System
       __continue_transaction
     end
 
+    def __basetype
+      :systemClass
+    end
+
     def to_database_view(depth, ranges = {}, params = {})
       obj = super
-      obj[:basetype] = :systemClass
 
       if depth > 0
         params_all_elements = {:allElements => true}

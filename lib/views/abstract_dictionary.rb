@@ -4,10 +4,12 @@ class AbstractDictionary
   primitive 'size', 'size'
   primitive '__each_key_and_value&', 'keysAndValuesDo:'
 
+  def __basetype
+    :dictionary
+  end
+
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
-
-    obj[:basetype] = :dictionary
 
     if depth > 0
       index = 1

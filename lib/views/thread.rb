@@ -1,7 +1,10 @@
 class Thread
+  def __basetype
+    :thread
+  end
+
   def to_database_view(depth, ranges = {}, params = {})
     obj = super
-    obj[:basetype] = :thread
 
     if depth > 0
       obj[:exception] = __exception.to_database_view(depth - 1, {}, {}) 

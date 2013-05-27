@@ -20,4 +20,5 @@ load './lib/views/abstract_dictionary.rb'
 load './lib/views/hash.rb'
 load './lib/views/system.rb'
 load './lib/views/ruby_workspace.rb'
+load './lib/views/repository.rb'
 
