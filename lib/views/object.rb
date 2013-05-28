@@ -3,6 +3,11 @@ class Object
     :object
   end
 
+  def custom_database_tabs
+    # [["Demo Tab", "demoData", "html with: 'This is an example'."]]
+    []
+  end
+
   def to_database_view(orig_depth, ranges = {}, params = {})
     obj = {:oop => self.object_id}
 
@@ -16,6 +21,12 @@ class Object
       
       obj[:instVars] = {}
       obj[:instVarsSize] = 0
+
+      if depth == 2
+        obj[:customTabs] = self.custom_database_tabs
+      else
+        obj[:customTabs] = []
+      end
 
       if render_inst_vars
         index = 1

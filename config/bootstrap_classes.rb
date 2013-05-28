@@ -21,4 +21,5 @@ load './lib/views/hash.rb'
 load './lib/views/system.rb'
 load './lib/views/ruby_workspace.rb'
 load './lib/views/repository.rb'
+load './lib/views/maglev_record.rb'
 
